@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { buscarProdutos } from "@/app/lib/api";
+import { buscarProdutoPorId } from "@/app/lib/api";
 
 export default function ProdutoDetalhes() {
     const router = useRouter();
@@ -12,8 +12,12 @@ export default function ProdutoDetalhes() {
 
     useEffect(() => {
         const fetchProduto = async () => {
-            const results = await buscarProdutos("");
-            setProduto(results.filter((produto) => produto.id === Number(id))[0]);
+            try {
+                const produto = await buscarProdutoPorId(Number(id));
+                setProduto(produto);
+            } catch (error) {
+                console.error(error);
+            }
         };
         if (id) {
             fetchProduto();

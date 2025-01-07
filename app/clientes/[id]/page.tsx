@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { buscarClientes } from "@/app/lib/api";
+import { buscarClientePorId } from "@/app/lib/api";
 
 export default function ClienteDetalhes() {
     const router = useRouter();
@@ -12,8 +12,12 @@ export default function ClienteDetalhes() {
 
     useEffect(() => {
         const fetchCliente = async () => {
-            const results = await buscarClientes("");
-            setCliente(results.filter((cliente) => cliente.id === Number(id))[0]);
+            try {
+                const cliente = await buscarClientePorId(Number(id));
+                setCliente(cliente);
+            } catch (error) {
+                console.error(error);
+            }
         };
         if (id) {
             fetchCliente();

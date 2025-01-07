@@ -80,6 +80,15 @@ export const buscarClientes = async (query: string) => {
     return results;
 };
 
+export const buscarClientePorId = async (id: number) => {
+    const response = await fetch(`http://localhost:8001/cliente/${id}`);
+    if (!response.ok) {
+        throw new Error("Erro ao buscar cliente");
+    }
+    const cliente: Cliente = await response.json();
+    return cliente;
+};
+
 export const cadastrarCliente = async (cliente: CadastrarCliente) => {
     const response = await fetch("http://localhost:8001/cliente", {
         method: "POST",
@@ -118,6 +127,15 @@ export const buscarProdutos = async (query: string) => {
     ) => produto.nome.toLowerCase().includes(query.toLowerCase()));
 
     return results;
+};
+
+export const buscarProdutoPorId = async (id: number) => {
+    const response = await fetch(`http://localhost:8001/produto/${id}`);
+    if (!response.ok) {
+        throw new Error("Erro ao buscar produto");
+    }
+    const produto: Produto = await response.json();
+    return produto;
 };
 
 export const cadastrarProduto = async (produto: CadastrarProduto) => {
