@@ -12,7 +12,6 @@ export default function Fornecedores() {
         const fetchFornecedores = async () => {
             const results = await buscarFornecedores(query);
             setFornecedores(results);
-            console.log(results)
         };
         fetchFornecedores();
     }, [query]);
