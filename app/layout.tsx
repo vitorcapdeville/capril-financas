@@ -24,6 +24,8 @@ export default function RootLayout({
                 <li><Link href="/fornecedores">Fornecedores</Link></li>
                 <li><Link href="/clientes">Clientes</Link></li>
                 <li><Link href="/produtos">Produtos</Link></li>
+                <li><Link href="/vendas">Vendas</Link></li>
+                <li><Link href="/compras">Compras</Link></li>
               </ul>
             </nav>
           </aside>

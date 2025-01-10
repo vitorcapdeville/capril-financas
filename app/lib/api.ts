@@ -29,6 +29,34 @@ interface CadastrarProduto {
     peso_em_gramas: number;
 }
 
+export interface Compra {
+    data_compra: string;
+    valor: number;
+    categoria: string;
+    fornecedor_id: number;
+    id: number;
+}
+
+export interface CadastrarCompra {
+    data_compra: string;
+    valor: number;
+    categoria: string;
+    fornecedor_id: number;
+}
+
+interface Venda {
+    data_venda: string;
+    data_pagamento?: string;
+    cliente_id: number;
+    id: number;
+}
+
+interface CadastrarVenda {
+    data_venda: string;
+    data_pagamento?: string;
+    cliente_id: number;
+}
+
 export const buscarFornecedores = async (query: string) => {
     const response = await fetch("http://localhost:8001/fornecedores");
     const fornecedores: Fornecedor[] = await response.json();
@@ -165,4 +193,59 @@ export const deletarProduto = async (id: number) => {
     }
 
     return;
+};
+
+export const buscarCompras = async () => {
+    const response = await fetch("http://localhost:8001/compras");
+    const compras: Compra[] = await response.json();
+    return compras;
+};
+
+export const buscarCompraPorId = async (id: number) => {
+    const response = await fetch(`http://localhost:8001/compra/${id}`);
+    if (!response.ok) {
+        throw new Error("Erro ao buscar compra");
+    }
+    const compra: Compra = await response.json();
+    return compra;
+};
+
+export const cadastrarCompra = async (compra: CadastrarCompra) => {
+    const response = await fetch("http://localhost:8001/compra", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(compra),
+    });
+
+    if (!response.ok) {
+        throw new Error("Erro ao cadastrar compra");
+    }
+
+    const novaCompra: Compra = await response.json();
+    return novaCompra;
+};
+
+export const buscarVendas = async () => {
+    const response = await fetch("http://localhost:8001/vendas");
+    const vendas: Venda[] = await response.json();
+    return vendas;
+};
+
+export const cadastrarVenda = async (venda: CadastrarVenda) => {
+    const response = await fetch("http://localhost:8001/venda", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(venda),
+    });
+
+    if (!response.ok) {
+        throw new Error("Erro ao cadastrar venda");
+    }
+
+    const novaVenda: Venda = await response.json();
+    return novaVenda;
 };
