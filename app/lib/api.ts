@@ -51,6 +51,12 @@ interface Venda {
     id: number;
 }
 
+interface Item {
+    produto_id: number;
+    preco_unitario: number;
+    quantidade: number;
+}
+
 interface CadastrarVenda {
     data_venda: string;
     data_pagamento?: string;
@@ -233,13 +239,24 @@ export const buscarVendas = async () => {
     return vendas;
 };
 
-export const cadastrarVenda = async (venda: CadastrarVenda) => {
+export const buscarVendaPorId = async (id: number) => {
+    const response = await fetch(`http://localhost:8001/venda/${id}`);
+    if (!response.ok) {
+        throw new Error("Erro ao buscar venda");
+    }
+    const venda: Venda = await response.json();
+    return venda;
+};
+
+export const cadastrarVenda = async (venda: CadastrarVenda, items: Item[]) => {
+    const body = { venda, items };
+    console.log(body);
     const response = await fetch("http://localhost:8001/venda", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(venda),
+        body: JSON.stringify(body),
     });
 
     if (!response.ok) {
