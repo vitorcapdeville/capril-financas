@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { buscarVendas, Venda } from "@/app/lib/api";
-import Link from "next/link";
+import ItemList from "@/app/ui/item-list";
 
 export default function Vendas() {
     const [vendas, setVendas] = useState<Venda[]>([]);
+    const [query, setQuery] = useState("");
 
     useEffect(() => {
         const fetchVendas = async () => {
@@ -15,21 +16,24 @@ export default function Vendas() {
         fetchVendas();
     }, []);
 
+    const filteredVendas = vendas.filter((venda) =>
+        venda.id == Number(query) || query == ""
+    );
+
     return (
         <div>
-            <h1>Vendas</h1>
-            <ul>
-                {vendas.map((venda) => (
-                    <li key={venda.id}>
-                        <Link href={`/vendas/${venda.id}`}>
-                            {venda.data_venda}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-            <Link href="/vendas/novo">
-                <button>Adicionar Venda</button>
-            </Link>
+            <ItemList
+                setQueryFunction={setQuery}
+                queryValue={query}
+                items={filteredVendas}
+                mainProperty="id"
+                subProperties={[{
+                    key: "data_venda",
+                    callback: (item: string) =>
+                        new Date(item).toLocaleDateString("pt-BR"),
+                }]}
+                routeName="vendas"
+            />
         </div>
     );
 }

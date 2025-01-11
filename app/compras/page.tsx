@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { buscarCompras, Compra } from "@/app/lib/api";
-import Link from "next/link";
+import ItemList from "@/app/ui/item-list";
+import { useEffect, useState } from "react";
 
 export default function Compras() {
     const [compras, setCompras] = useState<Compra[]>([]);
@@ -16,21 +16,27 @@ export default function Compras() {
         fetchCompras();
     }, []);
 
+    const filteredCompras = compras.filter((compra) =>
+        compra.categoria.toLowerCase().includes(query.toLowerCase())
+    );
+
     return (
         <div>
-            <h1>Compras</h1>
-            <ul>
-                {compras.map((compra) => (
-                    <li key={compra.id}>
-                        <Link href={`/compras/${compra.id}`}>
-                            {compra.categoria}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-            <Link href="/compras/novo">
-                <button>Adicionar Compra</button>
-            </Link>
+            <ItemList
+                setQueryFunction={setQuery}
+                queryValue={query}
+                items={filteredCompras}
+                mainProperty="categoria"
+                subProperties={[{
+                    key: "data_compra",
+                    callback: (item: string) =>
+                        new Date(item).toLocaleDateString("pt-BR"),
+                }, {
+                    key: "valor",
+                    callback: (item: number) => `R$ ${item.toFixed(2)}`,
+                }]}
+                routeName="compras"
+            />
         </div>
     );
 }

@@ -44,7 +44,7 @@ export interface CadastrarCompra {
     fornecedor_id: number;
 }
 
-interface Venda {
+export interface Venda {
     data_venda: string;
     data_pagamento?: string;
     cliente_id: number;
