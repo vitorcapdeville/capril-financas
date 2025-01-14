@@ -1,4 +1,4 @@
-interface Fornecedor {
+export interface Fornecedor {
     nome: string;
     id: number;
 }
@@ -67,9 +67,9 @@ export const buscarFornecedores = async (query: string) => {
     const response = await fetch("http://localhost:8001/fornecedores");
     const fornecedores: Fornecedor[] = await response.json();
 
-    const results = fornecedores.map((fornecedor) => fornecedor.nome).filter((
-        nome,
-    ) => nome.toLowerCase().includes(query.toLowerCase()));
+    const results = fornecedores.filter((
+        fornecedor,
+    ) => fornecedor.nome.toLowerCase().includes(query.toLowerCase()));
 
     return results;
 };
@@ -87,6 +87,15 @@ export const cadastrarFornecedor = async (nome: string) => {
         throw new Error("Erro ao cadastrar fornecedor");
     }
 
+    const fornecedor: Fornecedor = await response.json();
+    return fornecedor;
+};
+
+export const buscarFornecedorPorId = async (id: number) => {
+    const response = await fetch(`http://localhost:8001/fornecedor/${id}`);
+    if (!response.ok) {
+        throw new Error("Erro ao buscar cliente");
+    }
     const fornecedor: Fornecedor = await response.json();
     return fornecedor;
 };

@@ -16,9 +16,10 @@ export default function Compras() {
         fetchCompras();
     }, []);
 
-    const filteredCompras = compras.filter((compra) =>
-        compra.categoria.toLowerCase().includes(query.toLowerCase())
-    );
+    const filteredCompras = compras.filter((compra) => {
+        return compra.categoria.toLowerCase().includes(query.toLowerCase()) ||
+            query == "";
+    });
 
     return (
         <div>

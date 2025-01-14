@@ -38,7 +38,7 @@ export default function ItemList(
                 type="text"
                 placeholder="Buscar compras..."
                 value={queryValue}
-                onChange={setQueryFunction}
+                onChange={(e) => setQueryFunction(e.target.value)}
                 className="mb-4 p-3 border border-gray-300 rounded w-full"
             />
             <ul className="bg-gray-100 p-5 rounded-lg w-full">

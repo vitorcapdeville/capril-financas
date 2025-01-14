@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { buscarClientes, Cliente } from "@/app/lib/api";
-import Link from "next/link";
+import ItemList from "@/app/ui/item-list";
 
 export default function Clientes() {
     const [clientes, setClientes] = useState<Cliente[]>([]);
@@ -18,23 +18,14 @@ export default function Clientes() {
 
     return (
         <div>
-            <h1>Clientes</h1>
-            <input
-                type="text"
-                placeholder="Buscar clientes"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
+            <ItemList
+                setQueryFunction={setQuery}
+                queryValue={query}
+                items={clientes}
+                mainProperty="nome"
+                subProperties={[{key: "email", callback: (item: string) => item}, {key: "categoria", callback: (item: string) => item}]}
+                routeName="clientes"
             />
-            <ul>
-                {clientes.map((cliente) => (
-                    <li key={cliente.id}>
-                        <Link href={`/clientes/${cliente.id}`}>{cliente.nome}</Link>
-                    </li>
-                ))}
-            </ul>
-            <Link href="/clientes/novo">
-                <button>Adicionar Cliente</button>
-            </Link>
         </div>
     );
 }
