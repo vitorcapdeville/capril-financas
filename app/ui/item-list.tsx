@@ -36,7 +36,7 @@ export default function ItemList(
 
             <input
                 type="text"
-                placeholder="Buscar compras..."
+                placeholder={`Buscar ${routeName}...`}
                 value={queryValue}
                 onChange={(e) => setQueryFunction(e.target.value)}
                 className="mb-4 p-3 border border-gray-300 rounded w-full"
