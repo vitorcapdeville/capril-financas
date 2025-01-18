@@ -3,6 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { buscarClientePorId } from "@/app/lib/api";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 export default function ClienteDetalhes() {
     const router = useRouter();
@@ -29,13 +34,48 @@ export default function ClienteDetalhes() {
     }
 
     return (
-        <div>
-            <h1>Detalhes do Cliente</h1>
-            <p>Nome: {cliente.nome}</p>
-            <p>Email: {cliente.email}</p>
-            <p>Categoria: {cliente.categoria}</p>
-            <p>Endereço: {cliente.endereco}</p>
-            <button onClick={() => router.back()}>Voltar</button>
-        </div>
+        <Container maxWidth="sm">
+            <Typography variant="h4" component="h1" gutterBottom>
+                Detalhes do Cliente
+            </Typography>
+            <Box sx={{ mb: 2 }}>
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Nome"
+                    value={cliente.nome}
+                    slotProps={{ input: { readOnly: true } }}
+                />
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Email"
+                    value={cliente.email}
+                    slotProps={{ input: { readOnly: true } }}
+                />
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Categoria"
+                    value={cliente.categoria}
+                    slotProps={{ input: { readOnly: true } }}
+                />
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Endereço"
+                    value={cliente.endereco}
+                    slotProps={{ input: { readOnly: true } }}
+                />
+            </Box>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => router.back()}
+                sx={{ mt: 2 }}
+            >
+                Voltar
+            </Button>
+        </Container>
     );
 }

@@ -3,6 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { buscarProdutoPorId } from "@/app/lib/api";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 export default function ProdutoDetalhes() {
     const router = useRouter();
@@ -29,11 +34,34 @@ export default function ProdutoDetalhes() {
     }
 
     return (
-        <div>
-            <h1>Detalhes do Produto</h1>
-            <p>Nome: {produto.nome}</p>
-            <p>Peso: {produto.peso_em_gramas} gramas</p>
-            <button onClick={() => router.back()}>Voltar</button>
-        </div>
+        <Container maxWidth="sm">
+            <Typography variant="h4" component="h1" gutterBottom>
+                Detalhes do Produto
+            </Typography>
+            <Box sx={{ mb: 2 }}>
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Nome"
+                    value={produto.nome}
+                    slotProps={{ input: { readOnly: true } }}
+                />
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Peso (em gramas)"
+                    value={produto.peso_em_gramas}
+                    slotProps={{ input: { readOnly: true } }}
+                />
+            </Box>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => router.back()}
+                sx={{ mt: 2 }}
+            >
+                Voltar
+            </Button>
+        </Container>
     );
 }

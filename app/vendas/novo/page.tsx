@@ -91,7 +91,7 @@ export default function NovaVenda() {
                     margin="normal"
                     type="date"
                     label="Data da Venda"
-                    InputLabelProps={{ shrink: true }}
+                    slotProps={{ inputLabel: { shrink: true } }}
                     value={dataVenda}
                     onChange={(e) => setDataVenda(e.target.value)}
                 />
@@ -100,7 +100,7 @@ export default function NovaVenda() {
                     margin="normal"
                     type="date"
                     label="Data do Pagamento"
-                    InputLabelProps={{ shrink: true }}
+                    slotProps={{ inputLabel: { shrink: true } }}
                     value={dataPagamento}
                     onChange={(e) => setDataPagamento(e.target.value)}
                 />
