@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { buscarProdutos, Produto } from "@/app/lib/api";
+import { buscarProdutos } from "@/app/lib/api";
+import { Produto } from "../../lib/definitions";
 import ItemList from "@/app/ui/item-list";
 
 export default function Produtos() {

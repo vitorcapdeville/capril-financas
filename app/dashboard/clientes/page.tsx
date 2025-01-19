@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { buscarClientes, Cliente } from "@/app/lib/api";
+import { getToken } from "@/app/lib/actions";
+import { buscarClientes } from "@/app/lib/api";
 import ItemList from "@/app/ui/item-list";
+import { useEffect, useState } from "react";
+import { Cliente } from "../../lib/definitions";
 
 export default function Clientes() {
     const [clientes, setClientes] = useState<Cliente[]>([]);
@@ -23,7 +25,10 @@ export default function Clientes() {
                 queryValue={query}
                 items={clientes}
                 mainProperty="nome"
-                subProperties={[{key: "email", callback: (item: string) => item}, {key: "categoria", callback: (item: string) => item}]}
+                subProperties={[{
+                    key: "email",
+                    callback: (item: string) => item,
+                }, { key: "categoria", callback: (item: string) => item }]}
                 routeName="clientes"
             />
         </div>

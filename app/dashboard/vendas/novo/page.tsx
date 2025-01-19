@@ -6,9 +6,11 @@ import {
     buscarClientes,
     buscarProdutos,
     cadastrarVenda,
-    Cliente,
-    Produto,
 } from "@/app/lib/api";
+import {
+    Cliente,
+    Produto
+} from "@/app/lib/definitions";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";

@@ -65,7 +65,7 @@ export default function ItemList(
                     </li>
                 ))}
             </ul>
-            <Link href={`/${routeName}/novo`}>
+            <Link href={`/dashboard/${routeName}/novo`}>
                 <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">
                     Adicionar
                 </button>

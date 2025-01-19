@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { buscarVendas, Venda } from "@/app/lib/api";
+import { buscarVendas } from "@/app/lib/api";
+import { Venda } from "../../lib/definitions";
 import ItemList from "@/app/ui/item-list";
 
 export default function Vendas() {

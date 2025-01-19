@@ -1,6 +1,7 @@
 "use client";
 
-import { buscarFornecedores, Fornecedor } from "@/app/lib/api";
+import { buscarFornecedores } from "@/app/lib/api";
+import { Fornecedor } from "../../lib/definitions";
 import ItemList from "@/app/ui/item-list";
 import { useEffect, useState } from "react";
 

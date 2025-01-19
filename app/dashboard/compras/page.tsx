@@ -1,6 +1,7 @@
 "use client";
 
-import { buscarCompras, Compra } from "@/app/lib/api";
+import { buscarCompras } from "@/app/lib/api";
+import { Compra } from "../../lib/definitions";
 import ItemList from "@/app/ui/item-list";
 import { useEffect, useState } from "react";
 

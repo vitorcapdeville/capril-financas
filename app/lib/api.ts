@@ -1,70 +1,42 @@
-export interface Fornecedor {
-    nome: string;
-    id: number;
-}
+import { getToken } from "@/app/lib/actions";
+import {
+    CadastrarCliente,
+    CadastrarCompra,
+    CadastrarProduto,
+    CadastrarVenda,
+    Cliente,
+    Compra,
+    Fornecedor,
+    Item,
+    Produto,
+    Token,
+    Venda
+} from "@/app/lib/definitions";
 
-export interface Cliente {
-    nome: string;
-    email: string;
-    categoria: string;
-    endereco: string;
-    id: number;
-}
+export async function login(email: string, password: string): Promise<Token> {
+    let formData = new FormData();
+    formData.append("username", email);
+    formData.append("password", password);
 
-export interface CadastrarCliente {
-    nome: string;
-    email: string;
-    categoria: string;
-    endereco: string;
-}
+    const token = await fetch(`http://localhost:8001/login/access-token`, {
+        method: "POST",
+        body: formData,
+    });
 
-export interface Produto {
-    nome: string;
-    peso_em_gramas: number;
-    id: number;
-}
-
-interface CadastrarProduto {
-    nome: string;
-    peso_em_gramas: number;
-}
-
-export interface Compra {
-    data_compra: string;
-    valor: number;
-    categoria: string;
-    fornecedor_id: number;
-    id: number;
-}
-
-export interface CadastrarCompra {
-    data_compra: string;
-    valor: number;
-    categoria: string;
-    fornecedor_id: number;
-}
-
-export interface Venda {
-    data_venda: string;
-    data_pagamento?: string;
-    cliente_id: number;
-    id: number;
-}
-
-interface Item {
-    produto_id: number;
-    preco_unitario: number;
-    quantidade: number;
-}
-
-interface CadastrarVenda {
-    data_venda: string;
-    data_pagamento?: string;
-    cliente_id: number;
+    if (!token.ok) {
+        throw new Error("Failed to fetch data");
+    }
+    return token.json();
 }
 
 export const buscarFornecedores = async (query: string) => {
-    const response = await fetch("http://localhost:8001/fornecedores");
+    const token = await getToken();
+    console.log(token);
+    const response = await fetch("http://localhost:8001/fornecedores", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
     const fornecedores: Fornecedor[] = await response.json();
 
     const results = fornecedores.filter((
@@ -75,10 +47,12 @@ export const buscarFornecedores = async (query: string) => {
 };
 
 export const cadastrarFornecedor = async (nome: string) => {
+    const token = await getToken();
     const response = await fetch("http://localhost:8001/fornecedores", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ nome }),
     });
@@ -92,7 +66,12 @@ export const cadastrarFornecedor = async (nome: string) => {
 };
 
 export const buscarFornecedorPorId = async (id: number) => {
-    const response = await fetch(`http://localhost:8001/fornecedores/${id}`);
+    const token = await getToken();
+    const response = await fetch(`http://localhost:8001/fornecedores/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
     if (!response.ok) {
         throw new Error("Erro ao buscar cliente");
     }
@@ -101,8 +80,12 @@ export const buscarFornecedorPorId = async (id: number) => {
 };
 
 export const deletarFornecedor = async (id: number) => {
+    const token = await getToken();
     const response = await fetch(`http://localhost:8001/fornecedores/${id}`, {
         method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     });
 
     if (!response.ok) {
@@ -113,7 +96,12 @@ export const deletarFornecedor = async (id: number) => {
 };
 
 export const buscarClientes = async (query: string) => {
-    const response = await fetch("http://localhost:8001/clientes");
+    const token = await getToken();
+    const response = await fetch("http://localhost:8001/clientes", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
     const clientes: Cliente[] = await response.json();
 
     const results = clientes.filter((
@@ -124,7 +112,12 @@ export const buscarClientes = async (query: string) => {
 };
 
 export const buscarClientePorId = async (id: number) => {
-    const response = await fetch(`http://localhost:8001/clientes/${id}`);
+    const token = await getToken();
+    const response = await fetch(`http://localhost:8001/clientes/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
     if (!response.ok) {
         throw new Error("Erro ao buscar cliente");
     }
@@ -132,11 +125,15 @@ export const buscarClientePorId = async (id: number) => {
     return cliente;
 };
 
-export const cadastrarCliente = async (cliente: CadastrarCliente) => {
+export const cadastrarCliente = async (
+    cliente: CadastrarCliente,
+) => {
+    const token = await getToken();
     const response = await fetch("http://localhost:8001/clientes", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(cliente),
     });
@@ -150,8 +147,12 @@ export const cadastrarCliente = async (cliente: CadastrarCliente) => {
 };
 
 export const deletarCliente = async (id: number) => {
+    const token = await getToken();
     const response = await fetch(`http://localhost:8001/clientes/${id}`, {
         method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     });
 
     if (!response.ok) {
@@ -162,7 +163,12 @@ export const deletarCliente = async (id: number) => {
 };
 
 export const buscarProdutos = async (query: string) => {
-    const response = await fetch("http://localhost:8001/produtos");
+    const token = await getToken();
+    const response = await fetch("http://localhost:8001/produtos", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
     const produtos: Produto[] = await response.json();
 
     const results = produtos.filter((
@@ -173,7 +179,12 @@ export const buscarProdutos = async (query: string) => {
 };
 
 export const buscarProdutoPorId = async (id: number) => {
-    const response = await fetch(`http://localhost:8001/produtos/${id}`);
+    const token = await getToken();
+    const response = await fetch(`http://localhost:8001/produtos/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
     if (!response.ok) {
         throw new Error("Erro ao buscar produto");
     }
@@ -181,11 +192,15 @@ export const buscarProdutoPorId = async (id: number) => {
     return produto;
 };
 
-export const cadastrarProduto = async (produto: CadastrarProduto) => {
+export const cadastrarProduto = async (
+    produto: CadastrarProduto,
+) => {
+    const token = await getToken();
     const response = await fetch("http://localhost:8001/produtos", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(produto),
     });
@@ -199,8 +214,12 @@ export const cadastrarProduto = async (produto: CadastrarProduto) => {
 };
 
 export const deletarProduto = async (id: number) => {
+    const token = await getToken();
     const response = await fetch(`http://localhost:8001/produtos/${id}`, {
         method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     });
 
     if (!response.ok) {
@@ -211,13 +230,23 @@ export const deletarProduto = async (id: number) => {
 };
 
 export const buscarCompras = async () => {
-    const response = await fetch("http://localhost:8001/compras");
+    const token = await getToken();
+    const response = await fetch("http://localhost:8001/compras", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
     const compras: Compra[] = await response.json();
     return compras;
 };
 
 export const buscarCompraPorId = async (id: number) => {
-    const response = await fetch(`http://localhost:8001/compras/${id}`);
+    const token = await getToken();
+    const response = await fetch(`http://localhost:8001/compras/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
     if (!response.ok) {
         throw new Error("Erro ao buscar compra");
     }
@@ -225,11 +254,15 @@ export const buscarCompraPorId = async (id: number) => {
     return compra;
 };
 
-export const cadastrarCompra = async (compra: CadastrarCompra) => {
+export const cadastrarCompra = async (
+    compra: CadastrarCompra,
+) => {
+    const token = await getToken();
     const response = await fetch("http://localhost:8001/compras", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(compra),
     });
@@ -243,13 +276,23 @@ export const cadastrarCompra = async (compra: CadastrarCompra) => {
 };
 
 export const buscarVendas = async () => {
-    const response = await fetch("http://localhost:8001/vendas");
+    const token = await getToken();
+    const response = await fetch("http://localhost:8001/vendas", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
     const vendas: Venda[] = await response.json();
     return vendas;
 };
 
 export const buscarVendaPorId = async (id: number) => {
-    const response = await fetch(`http://localhost:8001/vendas/${id}`);
+    const token = await getToken();
+    const response = await fetch(`http://localhost:8001/vendas/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
     if (!response.ok) {
         throw new Error("Erro ao buscar venda");
     }
@@ -257,13 +300,17 @@ export const buscarVendaPorId = async (id: number) => {
     return venda;
 };
 
-export const cadastrarVenda = async (venda: CadastrarVenda, items: Item[]) => {
+export const cadastrarVenda = async (
+    venda: CadastrarVenda,
+    items: Item[],
+) => {
+    const token = await getToken();
     const body = { venda, items };
-    console.log(body);
     const response = await fetch("http://localhost:8001/vendas", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(body),
     });
@@ -275,3 +322,17 @@ export const cadastrarVenda = async (venda: CadastrarVenda, items: Item[]) => {
     const novaVenda: Venda = await response.json();
     return novaVenda;
 };
+
+export async function getUser() {
+    const token = await getToken();
+    const response = await fetch("http://localhost:8001/login/test-token", {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!response.ok) {
+        throw new Error("Failed to fetch data");
+    }
+    return response.json();
+}

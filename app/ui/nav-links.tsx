@@ -13,16 +13,16 @@ import {
 } from "react-icons/sl";
 
 const links = [
-    { name: "Home", href: "/", icon: SlHome },
+    { name: "Home", href: "/dashboard", icon: SlHome },
     {
         name: "Fornecedores",
-        href: "/fornecedores",
+        href: "/dashboard/fornecedores",
         icon: SlBriefcase,
     },
-    { name: "Clientes", href: "/clientes", icon: SlUser },
-    { name: "Produtos", href: "/produtos", icon: SlPresent },
-    { name: "Vendas", href: "/vendas", icon: SlWallet },
-    { name: "Compras", href: "/compras", icon: SlBasket },
+    { name: "Clientes", href: "/dashboard/clientes", icon: SlUser },
+    { name: "Produtos", href: "/dashboard/produtos", icon: SlPresent },
+    { name: "Vendas", href: "/dashboard/vendas", icon: SlWallet },
+    { name: "Compras", href: "/dashboard/compras", icon: SlBasket },
 ];
 
 export default function NavLinks() {
