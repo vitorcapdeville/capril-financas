@@ -75,7 +75,7 @@ export const buscarFornecedores = async (query: string) => {
 };
 
 export const cadastrarFornecedor = async (nome: string) => {
-    const response = await fetch("http://localhost:8001/fornecedor", {
+    const response = await fetch("http://localhost:8001/fornecedores", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -92,7 +92,7 @@ export const cadastrarFornecedor = async (nome: string) => {
 };
 
 export const buscarFornecedorPorId = async (id: number) => {
-    const response = await fetch(`http://localhost:8001/fornecedor/${id}`);
+    const response = await fetch(`http://localhost:8001/fornecedores/${id}`);
     if (!response.ok) {
         throw new Error("Erro ao buscar cliente");
     }
@@ -101,7 +101,7 @@ export const buscarFornecedorPorId = async (id: number) => {
 };
 
 export const deletarFornecedor = async (id: number) => {
-    const response = await fetch(`http://localhost:8001/fornecedor/${id}`, {
+    const response = await fetch(`http://localhost:8001/fornecedores/${id}`, {
         method: "DELETE",
     });
 
@@ -124,7 +124,7 @@ export const buscarClientes = async (query: string) => {
 };
 
 export const buscarClientePorId = async (id: number) => {
-    const response = await fetch(`http://localhost:8001/cliente/${id}`);
+    const response = await fetch(`http://localhost:8001/clientes/${id}`);
     if (!response.ok) {
         throw new Error("Erro ao buscar cliente");
     }
@@ -133,7 +133,7 @@ export const buscarClientePorId = async (id: number) => {
 };
 
 export const cadastrarCliente = async (cliente: CadastrarCliente) => {
-    const response = await fetch("http://localhost:8001/cliente", {
+    const response = await fetch("http://localhost:8001/clientes", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -150,7 +150,7 @@ export const cadastrarCliente = async (cliente: CadastrarCliente) => {
 };
 
 export const deletarCliente = async (id: number) => {
-    const response = await fetch(`http://localhost:8001/cliente/${id}`, {
+    const response = await fetch(`http://localhost:8001/clientes/${id}`, {
         method: "DELETE",
     });
 
@@ -173,7 +173,7 @@ export const buscarProdutos = async (query: string) => {
 };
 
 export const buscarProdutoPorId = async (id: number) => {
-    const response = await fetch(`http://localhost:8001/produto/${id}`);
+    const response = await fetch(`http://localhost:8001/produtos/${id}`);
     if (!response.ok) {
         throw new Error("Erro ao buscar produto");
     }
@@ -182,7 +182,7 @@ export const buscarProdutoPorId = async (id: number) => {
 };
 
 export const cadastrarProduto = async (produto: CadastrarProduto) => {
-    const response = await fetch("http://localhost:8001/produto", {
+    const response = await fetch("http://localhost:8001/produtos", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -199,7 +199,7 @@ export const cadastrarProduto = async (produto: CadastrarProduto) => {
 };
 
 export const deletarProduto = async (id: number) => {
-    const response = await fetch(`http://localhost:8001/produto/${id}`, {
+    const response = await fetch(`http://localhost:8001/produtos/${id}`, {
         method: "DELETE",
     });
 
@@ -217,7 +217,7 @@ export const buscarCompras = async () => {
 };
 
 export const buscarCompraPorId = async (id: number) => {
-    const response = await fetch(`http://localhost:8001/compra/${id}`);
+    const response = await fetch(`http://localhost:8001/compras/${id}`);
     if (!response.ok) {
         throw new Error("Erro ao buscar compra");
     }
@@ -226,7 +226,7 @@ export const buscarCompraPorId = async (id: number) => {
 };
 
 export const cadastrarCompra = async (compra: CadastrarCompra) => {
-    const response = await fetch("http://localhost:8001/compra", {
+    const response = await fetch("http://localhost:8001/compras", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -249,7 +249,7 @@ export const buscarVendas = async () => {
 };
 
 export const buscarVendaPorId = async (id: number) => {
-    const response = await fetch(`http://localhost:8001/venda/${id}`);
+    const response = await fetch(`http://localhost:8001/vendas/${id}`);
     if (!response.ok) {
         throw new Error("Erro ao buscar venda");
     }
@@ -260,7 +260,7 @@ export const buscarVendaPorId = async (id: number) => {
 export const cadastrarVenda = async (venda: CadastrarVenda, items: Item[]) => {
     const body = { venda, items };
     console.log(body);
-    const response = await fetch("http://localhost:8001/venda", {
+    const response = await fetch("http://localhost:8001/vendas", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
