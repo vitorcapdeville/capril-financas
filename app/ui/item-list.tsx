@@ -17,6 +17,7 @@ interface ItemListProps {
     mainProperty: string;
     subProperties: SubProperties[];
 }
+import Button from "@mui/material/Button";
 
 const capitalize = function (string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -38,7 +39,10 @@ export default function ItemList(
 ) {
     const pageCount = Math.ceil(countValue / pageSize);
 
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handlePageChange = (
+        event: React.ChangeEvent<unknown>,
+        value: number,
+    ) => {
         setPageFunction(value);
     };
 
@@ -87,9 +91,9 @@ export default function ItemList(
             />
 
             <Link href={`/dashboard/${routeName}/novo`}>
-                <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">
+                <Button variant="contained" color="primary" sx={{ mt: 2 }}>
                     Adicionar
-                </button>
+                </Button>
             </Link>
         </>
     );
