@@ -7,7 +7,6 @@ import { z } from "zod";
 
 function getPayloadFromToken(access_token: string): User {
     const encodedPayload = access_token.split(".")[1];
-    console.log(access_token);
     const decodedToken = JSON.parse(atob(encodedPayload));
     const user = {
         id: decodedToken.id,

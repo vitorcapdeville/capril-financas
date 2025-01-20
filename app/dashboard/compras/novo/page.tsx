@@ -21,7 +21,7 @@ export default function NovaCompra() {
 
     useEffect(() => {
         const fectchFornecedores = async () => {
-            const results = await buscarFornecedores("", 0, 100);
+            const results = await buscarFornecedores("", 1, 100);
             setFornecedores(results.data);
         };
         fectchFornecedores();
