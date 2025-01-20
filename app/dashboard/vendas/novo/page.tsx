@@ -1,22 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import {
-    buscarClientes,
-    buscarProdutos,
-    cadastrarVenda,
-} from "@/app/lib/api";
-import {
-    Cliente,
-    Produto
-} from "@/app/lib/definitions";
-import TextField from "@mui/material/TextField";
+import { buscarClientes, buscarProdutos, cadastrarVenda } from "@/app/lib/api";
+import { Cliente, Item, Produto } from "@/app/lib/definitions";
+import Autocomplete from "@mui/material/Autocomplete";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Autocomplete from "@mui/material/Autocomplete";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function NovaVenda() {
     const [dataVenda, setDataVenda] = useState("");
@@ -24,34 +17,34 @@ export default function NovaVenda() {
     const [clienteId, setClienteId] = useState("");
     const [clientes, setClientes] = useState<Cliente[]>([]);
     const [produtos, setProdutos] = useState<Produto[]>([]);
-    const [items, setItems] = useState([{
-        produto_id: "",
-        preco_unitario: "",
-        quantidade: "",
+    const [items, setItems] = useState<Item[]>([{
+        produto_id: 0,
+        preco_unitario: 0,
+        quantidade: 0,
     }]);
     const router = useRouter();
 
     useEffect(() => {
         const fetchClientes = async () => {
-            const results = await buscarClientes("");
-            setClientes(results);
+            const results = await buscarClientes("", 1, 100);
+            setClientes(results.data);
         };
         fetchClientes();
     }, []);
 
     useEffect(() => {
         const fetchProdutos = async () => {
-            const results = await buscarProdutos("");
-            setProdutos(results);
+            const results = await buscarProdutos("", 1, 100);
+            setProdutos(results.data);
         };
         fetchProdutos();
     }, []);
 
     const handleAddItem = () => {
         setItems([...items, {
-            produto_id: "",
-            preco_unitario: "",
-            quantidade: "",
+            produto_id: 0,
+            preco_unitario: 0,
+            quantidade: 0,
         }]);
     };
 
@@ -62,9 +55,21 @@ export default function NovaVenda() {
         }
     };
 
-    const handleItemChange = (index: number, field: string, value: string) => {
+    const handleProdutoIdChange = async (index: number, value: string) => {
         const newItems = [...items];
-        newItems[index][field] = value;
+        newItems[index].produto_id = Number(value);
+        setItems(newItems);
+    };
+
+    const handlePrecoUnitarioChange = (index: number, value: string) => {
+        const newItems = [...items];
+        newItems[index].preco_unitario = Number(value);
+        setItems(newItems);
+    };
+
+    const handleQuantidadeChange = (index: number, value: string) => {
+        const newItems = [...items];
+        newItems[index].quantidade = Number(value);
         setItems(newItems);
     };
 
@@ -146,13 +151,12 @@ export default function NovaVenda() {
                             )}
                             onChange={(_, value) => {
                                 if (value) {
-                                    handleItemChange(
+                                    handleProdutoIdChange(
                                         index,
-                                        "produto_id",
                                         value.id.toString(),
                                     );
                                 } else {
-                                    handleItemChange(index, "produto_id", "");
+                                    handleProdutoIdChange(index, "0");
                                 }
                             }}
                         />
@@ -163,9 +167,8 @@ export default function NovaVenda() {
                             label="Preço Unitário"
                             value={item.preco_unitario}
                             onChange={(e) =>
-                                handleItemChange(
+                                handlePrecoUnitarioChange(
                                     index,
-                                    "preco_unitario",
                                     e.target.value,
                                 )}
                         />
@@ -176,9 +179,8 @@ export default function NovaVenda() {
                             label="Quantidade"
                             value={item.quantidade}
                             onChange={(e) =>
-                                handleItemChange(
+                                handleQuantidadeChange(
                                     index,
-                                    "quantidade",
                                     e.target.value,
                                 )}
                         />

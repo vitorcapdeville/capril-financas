@@ -52,11 +52,13 @@ export const { auth, signIn, signOut } = NextAuth({
         jwt({ token, user }) {
             if (user) {
                 // User is available during sign-in
+                // @ts-ignore
                 token.access_token = user.access_token;
             }
             return token;
         },
         session({ session, token }) {
+            // @ts-ignore
             session.user.access_token = token.access_token as string;
             return session;
         },

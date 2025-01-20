@@ -51,17 +51,18 @@ export interface CadastrarCompra {
     categoria: string;
     fornecedor_id: number;
 }
+export interface Item {
+    produto_id: number;
+    preco_unitario: number;
+    quantidade: number;
+}
 
 export interface Venda {
     data_venda: string;
     data_pagamento?: string;
     cliente_id: number;
     id: number;
-}
-export interface Item {
-    produto_id: number;
-    preco_unitario: number;
-    quantidade: number;
+    items: Item[];
 }
 export interface CadastrarVenda {
     data_venda: string;

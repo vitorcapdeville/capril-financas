@@ -23,5 +23,6 @@ export async function authenticate(
 
 export async function getToken() {
     const session = await auth();
+    // @ts-expect-error Nao sei explicar pro auth.js que minha sessao tem esse atributo
     return session?.user?.access_token;
 }

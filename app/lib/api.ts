@@ -15,7 +15,7 @@ import {
 } from "@/app/lib/definitions";
 
 export async function login(email: string, password: string): Promise<Token> {
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append("username", email);
     formData.append("password", password);
 

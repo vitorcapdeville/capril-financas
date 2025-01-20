@@ -6,14 +6,12 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
-    const router = useRouter();
 
     const handleLogin = async () => {
         const formData = new FormData();
