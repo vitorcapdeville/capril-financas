@@ -19,10 +19,13 @@ export async function login(email: string, password: string): Promise<Token> {
     formData.append("username", email);
     formData.append("password", password);
 
-    const token = await fetch(`http://localhost:8001/login/access-token`, {
-        method: "POST",
-        body: formData,
-    });
+    const token = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/login/access-token`,
+        {
+            method: "POST",
+            body: formData,
+        },
+    );
 
     if (!token.ok) {
         throw new Error("Failed to fetch data");
@@ -30,29 +33,40 @@ export async function login(email: string, password: string): Promise<Token> {
     return token.json();
 }
 
-export const buscarFornecedores = async (query: string, page: number, pageSize: number) => {
+export const buscarFornecedores = async (
+    query: string,
+    page: number,
+    pageSize: number,
+) => {
     const skip = (page - 1) * pageSize;
     const limit = pageSize;
     const token = await getToken();
-    const response = await fetch(`http://localhost:8001/fornecedores?query=${query}&skip=${skip}&limit=${limit}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+    console.log("token", process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT);
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/fornecedores?query=${query}&skip=${skip}&limit=${limit}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
     const fornecedores: Items<Fornecedor> = await response.json();
     return fornecedores;
 };
 
 export const cadastrarFornecedor = async (nome: string) => {
     const token = await getToken();
-    const response = await fetch("http://localhost:8001/fornecedores", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/fornecedores`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ nome }),
         },
-        body: JSON.stringify({ nome }),
-    });
+    );
 
     if (!response.ok) {
         throw new Error("Erro ao cadastrar fornecedor");
@@ -64,11 +78,14 @@ export const cadastrarFornecedor = async (nome: string) => {
 
 export const buscarFornecedorPorId = async (id: number) => {
     const token = await getToken();
-    const response = await fetch(`http://localhost:8001/fornecedores/${id}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/fornecedores/${id}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
     if (!response.ok) {
         throw new Error("Erro ao buscar cliente");
     }
@@ -78,12 +95,15 @@ export const buscarFornecedorPorId = async (id: number) => {
 
 export const deletarFornecedor = async (id: number) => {
     const token = await getToken();
-    const response = await fetch(`http://localhost:8001/fornecedores/${id}`, {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/fornecedores/${id}`,
+        {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
 
     if (!response.ok) {
         throw new Error("Erro ao deletar fornecedor");
@@ -92,26 +112,36 @@ export const deletarFornecedor = async (id: number) => {
     return;
 };
 
-export const buscarClientes = async (query: string, page: number, pageSize: number) => {
+export const buscarClientes = async (
+    query: string,
+    page: number,
+    pageSize: number,
+) => {
     const skip = (page - 1) * pageSize;
     const limit = pageSize;
     const token = await getToken();
-    const response = await fetch(`http://localhost:8001/clientes?query=${query}&skip=${skip}&limit=${limit}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/clientes?query=${query}&skip=${skip}&limit=${limit}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
     const clientes: Items<Cliente> = await response.json();
     return clientes;
 };
 
 export const buscarClientePorId = async (id: number) => {
     const token = await getToken();
-    const response = await fetch(`http://localhost:8001/clientes/${id}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/clientes/${id}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
     if (!response.ok) {
         throw new Error("Erro ao buscar cliente");
     }
@@ -123,7 +153,7 @@ export const cadastrarCliente = async (
     cliente: CadastrarCliente,
 ) => {
     const token = await getToken();
-    const response = await fetch("http://localhost:8001/clientes", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/clientes`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -142,12 +172,15 @@ export const cadastrarCliente = async (
 
 export const deletarCliente = async (id: number) => {
     const token = await getToken();
-    const response = await fetch(`http://localhost:8001/clientes/${id}`, {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/clientes/${id}`,
+        {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
 
     if (!response.ok) {
         throw new Error("Erro ao deletar cliente");
@@ -156,26 +189,36 @@ export const deletarCliente = async (id: number) => {
     return;
 };
 
-export const buscarProdutos = async (query: string, page: number, pageSize: number) => {
+export const buscarProdutos = async (
+    query: string,
+    page: number,
+    pageSize: number,
+) => {
     const skip = (page - 1) * pageSize;
     const limit = pageSize;
     const token = await getToken();
-    const response = await fetch(`http://localhost:8001/produtos?query=${query}&skip=${skip}&limit=${limit}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/produtos?query=${query}&skip=${skip}&limit=${limit}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
     const produtos: Items<Produto> = await response.json();
     return produtos;
 };
 
 export const buscarProdutoPorId = async (id: number) => {
     const token = await getToken();
-    const response = await fetch(`http://localhost:8001/produtos/${id}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/produtos/${id}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
     if (!response.ok) {
         throw new Error("Erro ao buscar produto");
     }
@@ -187,7 +230,7 @@ export const cadastrarProduto = async (
     produto: CadastrarProduto,
 ) => {
     const token = await getToken();
-    const response = await fetch("http://localhost:8001/produtos", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/produtos`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -206,12 +249,15 @@ export const cadastrarProduto = async (
 
 export const deletarProduto = async (id: number) => {
     const token = await getToken();
-    const response = await fetch(`http://localhost:8001/produtos/${id}`, {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/produtos/${id}`,
+        {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
 
     if (!response.ok) {
         throw new Error("Erro ao deletar produto");
@@ -229,7 +275,7 @@ export const buscarCompras = async (
     const limit = pageSize;
     const token = await getToken();
     const response = await fetch(
-        `http://localhost:8001/compras?query=${query}&skip=${skip}&limit=${limit}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/compras?query=${query}&skip=${skip}&limit=${limit}`,
         {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -242,11 +288,14 @@ export const buscarCompras = async (
 
 export const buscarCompraPorId = async (id: number) => {
     const token = await getToken();
-    const response = await fetch(`http://localhost:8001/compras/${id}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/compras/${id}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
     if (!response.ok) {
         throw new Error("Erro ao buscar compra");
     }
@@ -258,7 +307,7 @@ export const cadastrarCompra = async (
     compra: CadastrarCompra,
 ) => {
     const token = await getToken();
-    const response = await fetch("http://localhost:8001/compras", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/compras`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -275,26 +324,36 @@ export const cadastrarCompra = async (
     return novaCompra;
 };
 
-export const buscarVendas = async (query: string, page: number, pageSize: number) => {
+export const buscarVendas = async (
+    query: string,
+    page: number,
+    pageSize: number,
+) => {
     const skip = (page - 1) * pageSize;
     const limit = pageSize;
     const token = await getToken();
-    const response = await fetch(`http://localhost:8001/vendas?query=${query}&skip=${skip}&limit=${limit}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/vendas?query=${query}&skip=${skip}&limit=${limit}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
     const vendas: Items<Venda> = await response.json();
     return vendas;
 };
 
 export const buscarVendaPorId = async (id: number) => {
     const token = await getToken();
-    const response = await fetch(`http://localhost:8001/vendas/${id}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/vendas/${id}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
     if (!response.ok) {
         throw new Error("Erro ao buscar venda");
     }
@@ -308,7 +367,7 @@ export const cadastrarVenda = async (
 ) => {
     const token = await getToken();
     const body = { venda, items };
-    const response = await fetch("http://localhost:8001/vendas", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/vendas`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -327,12 +386,15 @@ export const cadastrarVenda = async (
 
 export async function getUser() {
     const token = await getToken();
-    const response = await fetch("http://localhost:8001/login/test-token", {
-        method: "POST",
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${process.env.BACKEND_URL_SERVER}/login/test-token`,
+        {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
     if (!response.ok) {
         throw new Error("Failed to fetch data");
     }
