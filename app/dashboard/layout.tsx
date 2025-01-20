@@ -30,7 +30,7 @@ export default async function Layout({
             <form
               action={async () => {
                 "use server";
-                await signOut();
+                await signOut({ redirectTo: "/login" });
               }}
             >
               <button>
