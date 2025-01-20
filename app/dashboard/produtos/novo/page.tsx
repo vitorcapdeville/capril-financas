@@ -16,7 +16,7 @@ export default function NovoProduto() {
 
     const handleAddProduto = async () => {
         await cadastrarProduto({ nome, peso_em_gramas: Number(peso) });
-        router.push("/produtos");
+        router.push("/dashboard/produtos");
     };
 
     return (

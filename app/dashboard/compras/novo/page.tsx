@@ -34,7 +34,7 @@ export default function NovaCompra() {
             categoria,
             fornecedor_id: Number(fornecedorId),
         });
-        router.push("/compras");
+        router.push("/dashboard/compras");
     };
 
     return (

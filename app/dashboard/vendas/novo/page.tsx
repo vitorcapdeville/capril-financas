@@ -79,7 +79,7 @@ export default function NovaVenda() {
             data_pagamento: dataPagamento || undefined,
             cliente_id: Number(clienteId),
         }, vendaItems);
-        router.push("/vendas");
+        router.push("/dashboard/vendas");
     };
 
     return (

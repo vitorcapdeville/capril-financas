@@ -15,7 +15,7 @@ export default function NovoFornecedor() {
 
     const handleAddFornecedor = async () => {
         await cadastrarFornecedor(nome);
-        router.push("/fornecedores");
+        router.push("/dashboard/fornecedores");
     };
 
     return (

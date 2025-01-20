@@ -76,3 +76,8 @@ export interface UserInfo {
     is_superuser: boolean;
     full_name: string;
 }
+
+export interface Items<T> {
+    count: number;
+    data: T[];
+}

@@ -18,7 +18,7 @@ export default function NovoCliente() {
 
     const handleAddCliente = async () => {
         await cadastrarCliente({ nome, email, categoria, endereco });
-        router.push("/clientes");
+        router.push("/dashboard/clientes");
     };
 
     return (

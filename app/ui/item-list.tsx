@@ -1,5 +1,5 @@
+import { Pagination } from "@mui/material";
 import Link from "next/link";
-
 interface SubProperties {
     key: string;
     callback: any;
@@ -8,6 +8,10 @@ interface SubProperties {
 interface ItemListProps {
     setQueryFunction: any;
     queryValue: string;
+    setPageFunction: any;
+    countValue: number;
+    pageValue: number;
+    pageSize: number;
     items: any[];
     routeName: string;
     mainProperty: string;
@@ -22,12 +26,22 @@ export default function ItemList(
     {
         setQueryFunction,
         queryValue,
+        pageValue,
+        setPageFunction,
+        countValue,
+        pageSize,
         items,
         routeName,
         mainProperty,
         subProperties,
     }: ItemListProps,
 ) {
+    const pageCount = Math.ceil(countValue / pageSize);
+
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPageFunction(value);
+    };
+
     return (
         <>
             <h1 className="text-2xl font-bold mb-4">
@@ -45,7 +59,7 @@ export default function ItemList(
                 {items.map((item) => (
                     <li key={item.id} className="my-2">
                         <Link
-                            href={`/${routeName}/${item.id}`}
+                            href={`/dashboard/${routeName}/${item.id}`}
                             className="block bg-white p-3 rounded-md transition-colors hover:bg-gray-200"
                         >
                             <div className="font-bold">
@@ -65,6 +79,13 @@ export default function ItemList(
                     </li>
                 ))}
             </ul>
+
+            <Pagination
+                count={pageCount}
+                page={pageValue}
+                onChange={handlePageChange}
+            />
+
             <Link href={`/dashboard/${routeName}/novo`}>
                 <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">
                     Adicionar

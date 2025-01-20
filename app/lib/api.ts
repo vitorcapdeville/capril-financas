@@ -8,9 +8,10 @@ import {
     Compra,
     Fornecedor,
     Item,
+    Items,
     Produto,
     Token,
-    Venda
+    Venda,
 } from "@/app/lib/definitions";
 
 export async function login(email: string, password: string): Promise<Token> {
@@ -29,21 +30,17 @@ export async function login(email: string, password: string): Promise<Token> {
     return token.json();
 }
 
-export const buscarFornecedores = async (query: string) => {
+export const buscarFornecedores = async (query: string, page: number, pageSize: number) => {
+    const skip = (page - 1) * pageSize;
+    const limit = pageSize;
     const token = await getToken();
-    console.log(token);
-    const response = await fetch("http://localhost:8001/fornecedores", {
+    const response = await fetch(`http://localhost:8001/fornecedores?query=${query}&skip=${skip}&limit=${limit}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
-    const fornecedores: Fornecedor[] = await response.json();
-
-    const results = fornecedores.filter((
-        fornecedor,
-    ) => fornecedor.nome.toLowerCase().includes(query.toLowerCase()));
-
-    return results;
+    const fornecedores: Items<Fornecedor> = await response.json();
+    return fornecedores;
 };
 
 export const cadastrarFornecedor = async (nome: string) => {
@@ -95,20 +92,17 @@ export const deletarFornecedor = async (id: number) => {
     return;
 };
 
-export const buscarClientes = async (query: string) => {
+export const buscarClientes = async (query: string, page: number, pageSize: number) => {
+    const skip = (page - 1) * pageSize;
+    const limit = pageSize;
     const token = await getToken();
-    const response = await fetch("http://localhost:8001/clientes", {
+    const response = await fetch(`http://localhost:8001/clientes?query=${query}&skip=${skip}&limit=${limit}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
-    const clientes: Cliente[] = await response.json();
-
-    const results = clientes.filter((
-        cliente,
-    ) => cliente.nome.toLowerCase().includes(query.toLowerCase()));
-
-    return results;
+    const clientes: Items<Cliente> = await response.json();
+    return clientes;
 };
 
 export const buscarClientePorId = async (id: number) => {
@@ -162,20 +156,17 @@ export const deletarCliente = async (id: number) => {
     return;
 };
 
-export const buscarProdutos = async (query: string) => {
+export const buscarProdutos = async (query: string, page: number, pageSize: number) => {
+    const skip = (page - 1) * pageSize;
+    const limit = pageSize;
     const token = await getToken();
-    const response = await fetch("http://localhost:8001/produtos", {
+    const response = await fetch(`http://localhost:8001/produtos?query=${query}&skip=${skip}&limit=${limit}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
-    const produtos: Produto[] = await response.json();
-
-    const results = produtos.filter((
-        produto,
-    ) => produto.nome.toLowerCase().includes(query.toLowerCase()));
-
-    return results;
+    const produtos: Items<Produto> = await response.json();
+    return produtos;
 };
 
 export const buscarProdutoPorId = async (id: number) => {
@@ -229,14 +220,23 @@ export const deletarProduto = async (id: number) => {
     return;
 };
 
-export const buscarCompras = async () => {
+export const buscarCompras = async (
+    query: string,
+    page: number,
+    pageSize: number,
+) => {
+    const skip = (page - 1) * pageSize;
+    const limit = pageSize;
     const token = await getToken();
-    const response = await fetch("http://localhost:8001/compras", {
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `http://localhost:8001/compras?query=${query}&skip=${skip}&limit=${limit}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
-    const compras: Compra[] = await response.json();
+    );
+    const compras: Items<Compra> = await response.json();
     return compras;
 };
 
@@ -275,14 +275,16 @@ export const cadastrarCompra = async (
     return novaCompra;
 };
 
-export const buscarVendas = async () => {
+export const buscarVendas = async (query: string, page: number, pageSize: number) => {
+    const skip = (page - 1) * pageSize;
+    const limit = pageSize;
     const token = await getToken();
-    const response = await fetch("http://localhost:8001/vendas", {
+    const response = await fetch(`http://localhost:8001/vendas?query=${query}&skip=${skip}&limit=${limit}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
-    const vendas: Venda[] = await response.json();
+    const vendas: Items<Venda> = await response.json();
     return vendas;
 };
 
