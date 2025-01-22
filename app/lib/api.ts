@@ -20,7 +20,7 @@ export async function login(email: string, password: string): Promise<Token> {
     formData.append("password", password);
 
     const token = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/login/access-token`,
+        `${process.env.BACKEND_URL_SERVER}/login/access-token`,
         {
             method: "POST",
             body: formData,
@@ -41,7 +41,6 @@ export const buscarFornecedores = async (
     const skip = (page - 1) * pageSize;
     const limit = pageSize;
     const token = await getToken();
-    console.log("token", process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT);
     const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL_CLIENT}/fornecedores?query=${query}&skip=${skip}&limit=${limit}`,
         {

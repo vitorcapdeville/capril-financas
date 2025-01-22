@@ -1,0 +1,14 @@
+services:
+  frontend:
+    container_name: capril-financas-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - capril-financas-network
+    env_file: ".env.local"
+networks:
+  capril-financas-network:
+    external: true
