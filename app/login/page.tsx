@@ -6,19 +6,17 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useActionState } from "react";
 
 export default function Login() {
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
-
-    const handleLogin = async () => {
-        const formData = new FormData();
-        formData.append("email", email);
-        formData.append("password", senha);
-        await authenticate(undefined, formData);
-    };
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+    const [errorMessage, formAction, isPending] = useActionState(
+        authenticate,
+        undefined,
+    );
 
     return (
         <Container
@@ -50,31 +48,45 @@ export default function Login() {
                 <Typography variant="h4" component="h1" gutterBottom>
                     Login
                 </Typography>
-                <Box component="form" noValidate autoComplete="off">
+                <Box
+                    component="form"
+                    noValidate
+                    autoComplete="off"
+                    action={formAction}
+                >
                     <TextField
                         fullWidth
                         margin="normal"
                         type="email"
                         label="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        name="email"
                     />
                     <TextField
                         fullWidth
                         margin="normal"
                         type="password"
                         label="Senha"
-                        value={senha}
-                        onChange={(e) => setSenha(e.target.value)}
+                        name="password"
+                    />
+                    <input
+                        type="hidden"
+                        name="redirectTo"
+                        value={callbackUrl}
                     />
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={handleLogin}
                         sx={{ mt: 2 }}
+                        type="submit"
+                        aria-disabled={isPending}
                     >
                         Entrar
                     </Button>
+                    {errorMessage && (
+                        <Typography color="error" sx={{ mt: 2 }}>
+                            {errorMessage}
+                        </Typography>
+                    )}
                 </Box>
             </Box>
         </Container>

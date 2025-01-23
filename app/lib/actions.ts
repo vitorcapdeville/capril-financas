@@ -7,7 +7,7 @@ export async function authenticate(
     formData: FormData,
 ) {
     try {
-        await signIn("credentials", formData, { redirectTo: "/dashboard" });
+        await signIn("credentials", formData);
     } catch (error) {
         if (error instanceof AuthError) {
             switch (error.type) {
