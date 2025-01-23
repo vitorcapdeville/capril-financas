@@ -4,19 +4,35 @@ import { authenticate } from "@/app/lib/actions";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 
 export default function Login() {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
-    const [errorMessage, formAction, isPending] = useActionState(
+    const [data, formAction, isPending] = useActionState(
         authenticate,
-        undefined,
+        { errorMessage: "", trialNumber: 0 },
     );
+
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        if (data?.errorMessage) {
+            setOpen(true);
+        }
+    }, [data?.errorMessage, data?.trialNumber]);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <Container
@@ -82,11 +98,23 @@ export default function Login() {
                     >
                         Entrar
                     </Button>
-                    {errorMessage && (
-                        <Typography color="error" sx={{ mt: 2 }}>
-                            {errorMessage}
-                        </Typography>
-                    )}
+                    <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                {data?.errorMessage}
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose} autoFocus>
+                                Fechar
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Box>
             </Box>
         </Container>

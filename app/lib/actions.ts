@@ -3,7 +3,7 @@ import { auth, signIn } from "@/auth";
 import { AuthError } from "next-auth";
 
 export async function authenticate(
-    prevState: string | undefined,
+    prevState: { errorMessage: string; trialNumber: number } | undefined,
     formData: FormData,
 ) {
     try {
@@ -12,9 +12,15 @@ export async function authenticate(
         if (error instanceof AuthError) {
             switch (error.type) {
                 case "CredentialsSignin":
-                    return "Invalid credentials.";
+                    return {
+                        errorMessage: "Invalid credentials.",
+                        trialNumber: prevState ? prevState.trialNumber + 1 : 1,
+                    };
                 default:
-                    return "Something went wrong.";
+                    return {
+                        errorMessage: "Something went wrong.",
+                        trialNumber: prevState ? prevState.trialNumber + 1 : 1,
+                    };
             }
         }
         throw error;
