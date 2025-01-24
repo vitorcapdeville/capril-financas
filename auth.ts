@@ -35,8 +35,13 @@ export const { auth, signIn, signOut } = NextAuth({
 
                 if (parsedCredentials.success) {
                     const { email, password } = parsedCredentials.data;
+                    let token;
 
-                    const token = await login(email, password);
+                    try {
+                        token = await login(email, password);
+                    } catch (error) {
+                        return null;
+                    }
 
                     const user = getPayloadFromToken(token.access_token);
                     return user;
