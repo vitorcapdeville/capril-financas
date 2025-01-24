@@ -1,5 +1,5 @@
 "use server";
-import { auth, signIn } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 
 export async function authenticate(
@@ -37,4 +37,8 @@ export async function getToken() {
     const session = await auth();
     // @ts-expect-error Nao sei explicar pro auth.js que minha sessao tem esse atributo
     return session?.user?.access_token;
+}
+
+export async function signOutAction() {
+    await signOut({ redirectTo: "/login" });
 }

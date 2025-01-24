@@ -1,10 +1,10 @@
 "use client";
 
-import { buscarClientes } from "@/app/lib/api";
+import { readClientes } from "@/app/client";
+import useDebounce from "@/app/hooks/useDebounce";
 import ItemList from "@/app/ui/item-list";
 import { useEffect, useState } from "react";
 import { Cliente } from "../../lib/definitions";
-import useDebounce from "@/app/hooks/useDebounce";
 
 export default function Clientes() {
     const [clientes, setClientes] = useState<Cliente[]>([]);
@@ -16,12 +16,20 @@ export default function Clientes() {
     const pageSize = 5;
 
     useEffect(() => {
-        const fetchClientes = async () => {
-            const results = await buscarClientes(debouncedQuery, page, pageSize);
-            setClientes(results.data);
-            setCount(results.count);
+        const fetchVendas = async () => {
+            const { data, error } = await readClientes({
+                query: {
+                    query: debouncedQuery,
+                    skip: (page - 1) * pageSize,
+                    limit: pageSize,
+                },
+            });
+            if (data) {
+                setClientes(data.data);
+                setCount(data.count);
+            }
         };
-        fetchClientes();
+        fetchVendas();
     }, [page, debouncedQuery]);
 
     return (

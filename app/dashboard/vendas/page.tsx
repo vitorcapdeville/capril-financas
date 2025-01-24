@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { buscarVendas } from "@/app/lib/api";
-import { Venda } from "../../lib/definitions";
-import ItemList from "@/app/ui/item-list";
+import type { VendaPublic } from "@/app/client";
+import { readVendas } from "@/app/client";
 import useDebounce from "@/app/hooks/useDebounce";
+import ItemList from "@/app/ui/item-list";
+import { useEffect, useState } from "react";
 
 export default function Vendas() {
-    const [vendas, setVendas] = useState<Venda[]>([]);
+    const [vendas, setVendas] = useState<VendaPublic[]>([]);
     const [count, setCount] = useState(0);
     const [page, setPage] = useState(1);
     const [query, setQuery] = useState("");
@@ -17,9 +17,17 @@ export default function Vendas() {
 
     useEffect(() => {
         const fetchVendas = async () => {
-            const results = await buscarVendas(debouncedQuery, page, pageSize);
-            setVendas(results.data);
-            setCount(results.count);
+            const { data, error } = await readVendas({
+                query: {
+                    query: debouncedQuery,
+                    skip: (page - 1) * pageSize,
+                    limit: pageSize,
+                },
+            });
+            if (data) {
+                setVendas(data.data);
+                setCount(data.count);
+            }
         };
         fetchVendas();
     }, [page, debouncedQuery]);

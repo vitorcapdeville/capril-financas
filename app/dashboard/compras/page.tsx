@@ -1,10 +1,10 @@
 "use client";
 
-import { buscarCompras } from "@/app/lib/api";
+import { readCompras } from "@/app/client";
+import useDebounce from "@/app/hooks/useDebounce";
 import ItemList from "@/app/ui/item-list";
 import { useEffect, useState } from "react";
 import { Compra } from "../../lib/definitions";
-import useDebounce from "@/app/hooks/useDebounce";
 
 export default function Compras() {
     const [compras, setCompras] = useState<Compra[]>([]);
@@ -16,12 +16,20 @@ export default function Compras() {
     const pageSize = 5;
 
     useEffect(() => {
-        const fetchCompras = async () => {
-            const results = await buscarCompras(debouncedQuery, page, pageSize);
-            setCompras(results.data);
-            setCount(results.count);
+        const fetchVendas = async () => {
+            const { data, error } = await readCompras({
+                query: {
+                    query: debouncedQuery,
+                    skip: (page - 1) * pageSize,
+                    limit: pageSize,
+                },
+            });
+            if (data) {
+                setCompras(data.data);
+                setCount(data.count);
+            }
         };
-        fetchCompras();
+        fetchVendas();
     }, [page, debouncedQuery]);
 
     return (

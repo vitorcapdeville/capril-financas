@@ -1,10 +1,10 @@
 "use client";
 
-import { buscarFornecedores } from "@/app/lib/api";
-import { Fornecedor } from "../../lib/definitions";
+import { readFornecedores } from "@/app/client";
+import useDebounce from "@/app/hooks/useDebounce";
 import ItemList from "@/app/ui/item-list";
 import { useEffect, useState } from "react";
-import useDebounce from "@/app/hooks/useDebounce";
+import { Fornecedor } from "../../lib/definitions";
 
 export default function Fornecedores() {
     const [fornecedores, setFornecedores] = useState<Fornecedor[]>([]);
@@ -16,12 +16,20 @@ export default function Fornecedores() {
     const pageSize = 5;
 
     useEffect(() => {
-        const fetchFornecedores = async () => {
-            const results = await buscarFornecedores(debouncedQuery, page, pageSize);
-            setFornecedores(results.data);
-            setCount(results.count);
+        const fetchVendas = async () => {
+            const { data, error } = await readFornecedores({
+                query: {
+                    query: debouncedQuery,
+                    skip: (page - 1) * pageSize,
+                    limit: pageSize,
+                },
+            });
+            if (data) {
+                setFornecedores(data.data);
+                setCount(data.count);
+            }
         };
-        fetchFornecedores();
+        fetchVendas();
     }, [page, debouncedQuery]);
 
     return (

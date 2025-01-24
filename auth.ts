@@ -1,4 +1,4 @@
-import { loginAccessTokenLoginAccessTokenPost } from "@/app/client/sdk.gen";
+import { login } from "@/app/client/sdk.gen";
 import { User } from "@/app/lib/definitions";
 import { authConfig } from "@/auth.config";
 import NextAuth from "next-auth";
@@ -40,10 +40,9 @@ export const { auth, signIn, signOut } = NextAuth({
                     let error;
 
                     try {
-                        const response =
-                            await loginAccessTokenLoginAccessTokenPost({
-                                body: { username: email, password },
-                            });
+                        const response = await login({
+                            body: { username: email, password },
+                        });
                         data = response.data;
                         error = response.error;
                     } catch (e) {

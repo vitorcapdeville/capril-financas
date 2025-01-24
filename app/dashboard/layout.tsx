@@ -1,19 +1,38 @@
-import { getUser } from "@/app/lib/api";
+"use client";
+
+import { getCurrentUser } from "@/app/client/sdk.gen";
+import { signOutAction } from "@/app/lib/actions";
 import "@/app/ui/globals.css";
 import NavLinks from "@/app/ui/nav-links";
-import { auth, signOut } from "@/auth";
 import Image from "next/image"; // Importar o componente Image
+import { useEffect, useState } from "react";
 import { SlLogout } from "react-icons/sl";
+import { UserPublic } from "../client";
+import { client } from "../client/sdk.gen";
+import { getToken } from "../lib/actions";
 
-export default async function Layout({
+client.setConfig({
+  baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
+  auth: () => getToken(),
+});
+
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-  if (!session) return <div>Not authenticated</div>;
+  const [user, setUser] = useState<UserPublic | null | undefined>(null);
+  console.log(client.getConfig());
 
-  const user = await getUser();
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data } = await getCurrentUser();
+      setUser(data);
+    };
+    fetchUser();
+  }, []);
+
+  if (!user) return <div>Not authenticated</div>;
 
   return (
     <div className="flex">
@@ -28,10 +47,7 @@ export default async function Layout({
           <div className="flex space-x-2">
             <p>{user.email}</p>
             <form
-              action={async () => {
-                "use server";
-                await signOut({ redirectTo: "/login" });
-              }}
+              action={signOutAction}
             >
               <button>
                 <SlLogout />

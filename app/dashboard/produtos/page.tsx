@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { buscarProdutos } from "@/app/lib/api";
-import { Produto } from "../../lib/definitions";
-import ItemList from "@/app/ui/item-list";
+import { readProdutos } from "@/app/client";
 import useDebounce from "@/app/hooks/useDebounce";
+import ItemList from "@/app/ui/item-list";
+import { useEffect, useState } from "react";
+import { Produto } from "../../lib/definitions";
 
 export default function Produtos() {
     const [produtos, setProdutos] = useState<Produto[]>([]);
@@ -16,12 +16,20 @@ export default function Produtos() {
     const pageSize = 5;
 
     useEffect(() => {
-        const fetchProdutos = async () => {
-            const results = await buscarProdutos(debouncedQuery, page, pageSize);
-            setProdutos(results.data);
-            setCount(results.count);
+        const fetchVendas = async () => {
+            const { data, error } = await readProdutos({
+                query: {
+                    query: debouncedQuery,
+                    skip: (page - 1) * pageSize,
+                    limit: pageSize,
+                },
+            });
+            if (data) {
+                setProdutos(data.data);
+                setCount(data.count);
+            }
         };
-        fetchProdutos();
+        fetchVendas();
     }, [page, debouncedQuery]);
 
     return (
