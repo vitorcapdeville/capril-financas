@@ -1,4 +1,4 @@
-import { login } from "@/app/lib/api";
+import { loginAccessTokenLoginAccessTokenPost } from "@/app/client/sdk.gen";
 import { User } from "@/app/lib/definitions";
 import { authConfig } from "@/auth.config";
 import NextAuth from "next-auth";
@@ -35,16 +35,28 @@ export const { auth, signIn, signOut } = NextAuth({
 
                 if (parsedCredentials.success) {
                     const { email, password } = parsedCredentials.data;
-                    let token;
+
+                    let data;
+                    let error;
 
                     try {
-                        token = await login(email, password);
-                    } catch (error) {
-                        return null;
+                        const response =
+                            await loginAccessTokenLoginAccessTokenPost({
+                                body: { username: email, password },
+                            });
+                        data = response.data;
+                        error = response.error;
+                    } catch (e) {
+                        throw Error("Falha de comunicação com a API.");
                     }
 
-                    const user = getPayloadFromToken(token.access_token);
-                    return user;
+                    if (error) {
+                        throw Error(String(error.detail));
+                    }
+
+                    if (data) {
+                        return getPayloadFromToken(data.access_token);
+                    }
                 }
 
                 return null;

@@ -13,12 +13,18 @@ export async function authenticate(
             switch (error.type) {
                 case "CredentialsSignin":
                     return {
-                        errorMessage: "Invalid credentials.",
+                        errorMessage: "Email ou senha inválidos.",
+                        trialNumber: prevState ? prevState.trialNumber + 1 : 1,
+                    };
+                case "CallbackRouteError":
+                    return {
+                        errorMessage: error.cause?.err?.message ||
+                            "Algo deu errado.",
                         trialNumber: prevState ? prevState.trialNumber + 1 : 1,
                     };
                 default:
                     return {
-                        errorMessage: "Something went wrong.",
+                        errorMessage: "Algo deu errado.",
                         trialNumber: prevState ? prevState.trialNumber + 1 : 1,
                     };
             }
