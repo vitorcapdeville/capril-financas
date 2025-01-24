@@ -6,44 +6,60 @@ interface SubProperties {
 }
 
 interface ItemListProps {
-    setQueryFunction: any;
-    queryValue: string;
-    setPageFunction: any;
-    countValue: number;
-    pageValue: number;
+    readItemsFunction: any;
     pageSize: number;
-    items: any[];
     routeName: string;
     mainProperty: string;
     subProperties: SubProperties[];
 }
 import Button from "@mui/material/Button";
+import { useEffect, useState } from "react";
+import useDebounce from "../hooks/useDebounce";
 
 const capitalize = function (string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-export default function ItemList(
+export default function ItemList<T>(
     {
-        setQueryFunction,
-        queryValue,
-        pageValue,
-        setPageFunction,
-        countValue,
+        readItemsFunction,
         pageSize,
-        items,
         routeName,
         mainProperty,
         subProperties,
     }: ItemListProps,
 ) {
-    const pageCount = Math.ceil(countValue / pageSize);
+    const [items, setItems] = useState<any[]>([]);
+    const [count, setCount] = useState(0);
+    const [page, setPage] = useState(1);
+    const [query, setQuery] = useState("");
+
+    const debouncedQuery = useDebounce(query, 500);
+
+    useEffect(() => {
+        const fetchItems = async () => {
+            const { data } = await readItemsFunction({
+                query: {
+                    query: debouncedQuery,
+                    skip: (page - 1) * pageSize,
+                    limit: pageSize,
+                },
+            });
+            if (data) {
+                setItems(data.data);
+                setCount(data.count);
+            }
+        };
+        fetchItems();
+    }, [page, debouncedQuery]);
+
+    const pageCount = Math.ceil(count / pageSize);
 
     const handlePageChange = (
         event: React.ChangeEvent<unknown>,
         value: number,
     ) => {
-        setPageFunction(value);
+        setPage(value);
     };
 
     return (
@@ -55,8 +71,8 @@ export default function ItemList(
             <input
                 type="text"
                 placeholder={`Buscar ${routeName}...`}
-                value={queryValue}
-                onChange={(e) => setQueryFunction(e.target.value)}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
                 className="mb-4 p-3 border border-gray-300 rounded w-full"
             />
             <ul className="bg-gray-100 p-5 rounded-lg w-full">
@@ -86,7 +102,7 @@ export default function ItemList(
 
             <Pagination
                 count={pageCount}
-                page={pageValue}
+                page={page}
                 onChange={handlePageChange}
             />
 

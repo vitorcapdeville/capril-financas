@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/app/client/sdk.gen";
 import { signOutAction } from "@/app/lib/actions";
 import "@/app/ui/globals.css";
 import NavLinks from "@/app/ui/nav-links";
-import Image from "next/image"; // Importar o componente Image
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { SlLogout } from "react-icons/sl";
 import { UserPublic } from "../client";
@@ -22,7 +22,6 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   const [user, setUser] = useState<UserPublic | null | undefined>(null);
-  console.log(client.getConfig());
 
   useEffect(() => {
     const fetchUser = async () => {
