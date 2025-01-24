@@ -1,13 +1,15 @@
-"use client";
-
 import { readFornecedores } from "@/app/client";
 import ItemList from "@/app/ui/item-list";
 
-export default function Fornecedores() {
+import { SearchParams } from "@/app/lib/definitions";
+export default function Fornecedores(
+    { searchParams }: { searchParams: SearchParams },
+) {
     const pageSize = 5;
     return (
         <div>
             <ItemList
+                searchParams={searchParams}
                 readItemsFunction={readFornecedores}
                 pageSize={pageSize}
                 mainProperty="nome"

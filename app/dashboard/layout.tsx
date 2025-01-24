@@ -1,35 +1,16 @@
-"use client";
-
 import { getCurrentUser } from "@/app/client/sdk.gen";
 import { signOutAction } from "@/app/lib/actions";
 import "@/app/ui/globals.css";
 import NavLinks from "@/app/ui/nav-links";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { SlLogout } from "react-icons/sl";
-import { UserPublic } from "../client";
-import { client } from "../client/sdk.gen";
-import { getToken } from "../lib/actions";
 
-client.setConfig({
-  baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
-  auth: () => getToken(),
-});
-
-export default function Layout({
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [user, setUser] = useState<UserPublic | null | undefined>(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data } = await getCurrentUser();
-      setUser(data);
-    };
-    fetchUser();
-  }, []);
+  const { data: user } = await getCurrentUser();
 
   if (!user) return <div>Not authenticated</div>;
 

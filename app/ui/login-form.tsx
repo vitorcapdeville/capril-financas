@@ -8,6 +8,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
@@ -29,10 +30,6 @@ export default function LoginForm() {
             setOpen(true);
         }
     }, [data?.errorMessage, data?.trialNumber]);
-
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     return (
         <Container
@@ -94,23 +91,24 @@ export default function LoginForm() {
                         color="primary"
                         sx={{ mt: 2 }}
                         type="submit"
-                        aria-disabled={isPending}
+                        disabled={isPending}
                     >
-                        Entrar
+                        {isPending ? "Entrando..." : "Entrar"}
                     </Button>
                     <Dialog
                         open={open}
-                        onClose={handleClose}
+                        onClose={() => setOpen(false)}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                     >
+                        <DialogTitle id="alert-dialog-title">Erro</DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
                                 {data?.errorMessage}
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={handleClose} autoFocus>
+                            <Button onClick={() => setOpen(false)} autoFocus>
                                 Fechar
                             </Button>
                         </DialogActions>

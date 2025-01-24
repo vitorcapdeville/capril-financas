@@ -82,3 +82,5 @@ export interface Items<T> {
     count: number;
     data: T[];
 }
+
+export type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;

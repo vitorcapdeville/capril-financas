@@ -1,13 +1,15 @@
-"use client";
-
 import { readCompras } from "@/app/client";
+import { SearchParams } from "@/app/lib/definitions";
 import ItemList from "@/app/ui/item-list";
 
-export default function Compras() {
+export default function Compras(
+    { searchParams }: { searchParams: SearchParams },
+) {
     const pageSize = 5;
     return (
         <div>
             <ItemList
+                searchParams={searchParams}
                 readItemsFunction={readCompras}
                 pageSize={pageSize}
                 mainProperty="categoria"

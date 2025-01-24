@@ -9,9 +9,15 @@ export const metadata = {
 };
 
 client.setConfig({
-  baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
+  baseUrl: process.env.BACKEND_URL,
   auth: () => getToken(),
 });
+
+// // Adicioanr lag nas requests para testar comportamento do app
+// client.interceptors.request.use(async (request) => {
+//   await new Promise((r) => setTimeout(r, 2000));
+//   return request;
+// });
 
 export default function RootLayout({
   children,

@@ -1,27 +1,30 @@
-import { Pagination } from "@mui/material";
+import { SearchParams } from "@/app/lib/definitions";
+import Pagination from "@/app/ui/pagination";
+import Search from "@/app/ui/search";
+import Button from "@mui/material/Button";
 import Link from "next/link";
+
 interface SubProperties {
     key: string;
     callback: any;
 }
 
 interface ItemListProps {
+    searchParams: SearchParams;
     readItemsFunction: any;
     pageSize: number;
     routeName: string;
     mainProperty: string;
     subProperties: SubProperties[];
 }
-import Button from "@mui/material/Button";
-import { useEffect, useState } from "react";
-import useDebounce from "../hooks/useDebounce";
 
 const capitalize = function (string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-export default function ItemList<T>(
+export default async function ItemList(
     {
+        searchParams,
         readItemsFunction,
         pageSize,
         routeName,
@@ -29,38 +32,24 @@ export default function ItemList<T>(
         subProperties,
     }: ItemListProps,
 ) {
-    const [items, setItems] = useState<any[]>([]);
-    const [count, setCount] = useState(0);
-    const [page, setPage] = useState(1);
-    const [query, setQuery] = useState("");
+    const params = await searchParams;
+    const page = typeof params.page === "string" ? Number(params.page) : 1;
 
-    const debouncedQuery = useDebounce(query, 500);
+    const search = typeof params.search === "string"
+        ? params.search
+        : undefined;
 
-    useEffect(() => {
-        const fetchItems = async () => {
-            const { data } = await readItemsFunction({
-                query: {
-                    query: debouncedQuery,
-                    skip: (page - 1) * pageSize,
-                    limit: pageSize,
-                },
-            });
-            if (data) {
-                setItems(data.data);
-                setCount(data.count);
-            }
-        };
-        fetchItems();
-    }, [page, debouncedQuery]);
+    const { data } = await readItemsFunction({
+        query: {
+            query: search,
+            skip: (page - 1) * pageSize,
+            limit: pageSize,
+        },
+    });
 
-    const pageCount = Math.ceil(count / pageSize);
+    const items: any = data.data;
 
-    const handlePageChange = (
-        event: React.ChangeEvent<unknown>,
-        value: number,
-    ) => {
-        setPage(value);
-    };
+    const pageCount = Math.ceil(data.count / pageSize);
 
     return (
         <>
@@ -68,15 +57,9 @@ export default function ItemList<T>(
                 {capitalize(routeName)}
             </h1>
 
-            <input
-                type="text"
-                placeholder={`Buscar ${routeName}...`}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="mb-4 p-3 border border-gray-300 rounded w-full"
-            />
+            <Search search={search} routeName={routeName} />
             <ul className="bg-gray-100 p-5 rounded-lg w-full">
-                {items.map((item) => (
+                {items.map((item: any) => (
                     <li key={item.id} className="my-2">
                         <Link
                             href={`/dashboard/${routeName}/${item.id}`}
@@ -101,9 +84,8 @@ export default function ItemList<T>(
             </ul>
 
             <Pagination
+                pageNumber={page}
                 count={pageCount}
-                page={page}
-                onChange={handlePageChange}
             />
 
             <Link href={`/dashboard/${routeName}/novo`}>
