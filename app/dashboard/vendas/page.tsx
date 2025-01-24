@@ -17,7 +17,7 @@ export default function Vendas() {
 
     useEffect(() => {
         const fetchVendas = async () => {
-            const { data, error } = await readVendas({
+            const { data } = await readVendas({
                 query: {
                     query: debouncedQuery,
                     skip: (page - 1) * pageSize,

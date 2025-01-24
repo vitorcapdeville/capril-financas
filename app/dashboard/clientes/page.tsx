@@ -17,7 +17,7 @@ export default function Clientes() {
 
     useEffect(() => {
         const fetchVendas = async () => {
-            const { data, error } = await readClientes({
+            const { data } = await readClientes({
                 query: {
                     query: debouncedQuery,
                     skip: (page - 1) * pageSize,

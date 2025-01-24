@@ -17,7 +17,7 @@ export default function Compras() {
 
     useEffect(() => {
         const fetchVendas = async () => {
-            const { data, error } = await readCompras({
+            const { data } = await readCompras({
                 query: {
                     query: debouncedQuery,
                     skip: (page - 1) * pageSize,

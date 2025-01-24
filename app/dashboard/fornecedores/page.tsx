@@ -17,7 +17,7 @@ export default function Fornecedores() {
 
     useEffect(() => {
         const fetchVendas = async () => {
-            const { data, error } = await readFornecedores({
+            const { data } = await readFornecedores({
                 query: {
                     query: debouncedQuery,
                     skip: (page - 1) * pageSize,

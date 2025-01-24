@@ -17,7 +17,7 @@ export default function Produtos() {
 
     useEffect(() => {
         const fetchVendas = async () => {
-            const { data, error } = await readProdutos({
+            const { data } = await readProdutos({
                 query: {
                     query: debouncedQuery,
                     skip: (page - 1) * pageSize,
