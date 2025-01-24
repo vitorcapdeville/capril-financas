@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/53d3bb45-2b97-4e70-9d9a-55717e16dfbd/resourceGroups/capril-financas/providers/Microsoft.Web/sites/capril-financas",
+    "appService.deploySubpath": "."
+}
