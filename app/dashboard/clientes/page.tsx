@@ -1,6 +1,6 @@
 import { readClientes } from "@/app/client";
 import { SearchParams } from "@/app/lib/definitions";
-import ItemList from "@/app/ui/item-list";
+import SearchablePaginatedItemList from "@/app/ui/searchable-paginated-item-list";
 
 export default function Clientes(
     { searchParams }: { searchParams: SearchParams },
@@ -8,7 +8,7 @@ export default function Clientes(
     const pageSize = 5;
     return (
         <div>
-            <ItemList
+            <SearchablePaginatedItemList
                 searchParams={searchParams}
                 readItemsFunction={readClientes}
                 pageSize={pageSize}

@@ -1,5 +1,5 @@
 import { readFornecedores } from "@/app/client";
-import ItemList from "@/app/ui/item-list";
+import SearchablePaginatedItemList from "@/app/ui/searchable-paginated-item-list";
 
 import { SearchParams } from "@/app/lib/definitions";
 export default function Fornecedores(
@@ -8,7 +8,7 @@ export default function Fornecedores(
     const pageSize = 5;
     return (
         <div>
-            <ItemList
+            <SearchablePaginatedItemList
                 searchParams={searchParams}
                 readItemsFunction={readFornecedores}
                 pageSize={pageSize}

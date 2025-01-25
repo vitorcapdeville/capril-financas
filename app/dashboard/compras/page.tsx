@@ -1,6 +1,6 @@
 import { readCompras } from "@/app/client";
 import { SearchParams } from "@/app/lib/definitions";
-import ItemList from "@/app/ui/item-list";
+import SearchablePaginatedItemList from "@/app/ui/searchable-paginated-item-list";
 
 export default function Compras(
     { searchParams }: { searchParams: SearchParams },
@@ -8,7 +8,7 @@ export default function Compras(
     const pageSize = 5;
     return (
         <div>
-            <ItemList
+            <SearchablePaginatedItemList
                 searchParams={searchParams}
                 readItemsFunction={readCompras}
                 pageSize={pageSize}

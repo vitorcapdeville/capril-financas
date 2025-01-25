@@ -3,14 +3,14 @@ import Pagination from "@/app/ui/pagination";
 import Search from "@/app/ui/search";
 import Button from "@mui/material/Button";
 import Link from "next/link";
+import { Suspense } from "react";
 
 interface SubProperties {
     key: string;
     callback: any;
 }
 
-interface ItemListProps {
-    searchParams: SearchParams;
+interface BaseProps {
     readItemsFunction: any;
     pageSize: number;
     routeName: string;
@@ -18,27 +18,29 @@ interface ItemListProps {
     subProperties: SubProperties[];
 }
 
+interface SearchablePaginatedItemListProps extends BaseProps {
+    searchParams: SearchParams;
+}
+interface PaginatedItemList extends BaseProps {
+    search: string;
+    page: number;
+}
+
 const capitalize = function (string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-export default async function ItemList(
+async function PaginatedItemList(
     {
-        searchParams,
-        readItemsFunction,
+        search,
+        page,
         pageSize,
+        readItemsFunction,
         routeName,
         mainProperty,
         subProperties,
-    }: ItemListProps,
+    }: PaginatedItemList,
 ) {
-    const params = await searchParams;
-    const page = typeof params.page === "string" ? Number(params.page) : 1;
-
-    const search = typeof params.search === "string"
-        ? params.search
-        : undefined;
-
     const { data } = await readItemsFunction({
         query: {
             query: search,
@@ -46,18 +48,11 @@ export default async function ItemList(
             limit: pageSize,
         },
     });
-
     const items: any = data.data;
-
     const pageCount = Math.ceil(data.count / pageSize);
 
     return (
         <>
-            <h1 className="text-2xl font-bold mb-4">
-                {capitalize(routeName)}
-            </h1>
-
-            <Search search={search} routeName={routeName} />
             <ul className="bg-gray-100 p-5 rounded-lg w-full">
                 {items.map((item: any) => (
                     <li key={item.id} className="my-2">
@@ -87,8 +82,39 @@ export default async function ItemList(
                 pageNumber={page}
                 count={pageCount}
             />
+        </>
+    );
+}
 
-            <Link href={`/dashboard/${routeName}/novo`}>
+export default async function SearchablePaginatedItemList(
+    props: SearchablePaginatedItemListProps,
+) {
+    const params = await props.searchParams;
+    const page = typeof params.page === "string" ? Number(params.page) : 1;
+
+    const search = typeof params.search === "string"
+        ? params.search
+        : undefined;
+
+    return (
+        <>
+            <h1 className="text-2xl font-bold mb-4">
+                {capitalize(props.routeName)}
+            </h1>
+
+            <Search search={search} routeName={props.routeName} />
+            <Suspense fallback={<div>Carregando...</div>}>
+                <PaginatedItemList
+                    search={search || ""}
+                    page={page}
+                    readItemsFunction={props.readItemsFunction}
+                    pageSize={props.pageSize}
+                    routeName={props.routeName}
+                    mainProperty={props.mainProperty}
+                    subProperties={props.subProperties}
+                />
+            </Suspense>
+            <Link href={`/dashboard/${props.routeName}/novo`}>
                 <Button variant="contained" color="primary" sx={{ mt: 2 }}>
                     Adicionar
                 </Button>
