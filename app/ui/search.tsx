@@ -1,5 +1,7 @@
 "use client";
 
+import SearchIcon from "@mui/icons-material/Search";
+import { InputAdornment, TextField } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
@@ -27,14 +29,25 @@ const Search = (
             params.delete("search");
         }
         router.push(`${pathname}?${params.toString()}`);
-    }, [query]);
+    }, [query, pathname, router, searchParams]);
 
     return (
-        <input
+        <TextField
             value={text}
             placeholder={`Buscar ${routeName}...`}
             onChange={(e) => setText(e.target.value)}
-            className="mb-4 p-3 border border-gray-300 rounded w-full"
+            id="outlined-start-adornment"
+            fullWidth
+            margin="normal"
+            slotProps={{
+                input: {
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <SearchIcon />
+                        </InputAdornment>
+                    ),
+                },
+            }}
         />
     );
 };

@@ -26,7 +26,7 @@ const Pagination = (
         params.set("page", page.toString());
 
         router.push(`${pathname}?${params.toString()}`);
-    }, [page]);
+    }, [page, pathname, router, searchParams]);
 
     return (
         <PaginationMUI
