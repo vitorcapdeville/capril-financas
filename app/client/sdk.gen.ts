@@ -52,7 +52,7 @@ export const deleteCliente = <ThrowOnError extends boolean = false>(options: Opt
                 type: 'http'
             }
         ],
-        url: '/clientes/{cliente_id}',
+        url: '/clientes/{id}',
         ...options
     });
 };
@@ -68,7 +68,7 @@ export const readClienteById = <ThrowOnError extends boolean = false>(options: O
                 type: 'http'
             }
         ],
-        url: '/clientes/{cliente_id}',
+        url: '/clientes/{id}',
         ...options
     });
 };
@@ -120,7 +120,7 @@ export const readCompraById = <ThrowOnError extends boolean = false>(options: Op
                 type: 'http'
             }
         ],
-        url: '/compras/{compra_id}',
+        url: '/compras/{id}',
         ...options
     });
 };
@@ -172,7 +172,7 @@ export const deleteFornecedor = <ThrowOnError extends boolean = false>(options: 
                 type: 'http'
             }
         ],
-        url: '/fornecedores/{fornecedor_id}',
+        url: '/fornecedores/{id}',
         ...options
     });
 };
@@ -188,7 +188,7 @@ export const readFornecedorById = <ThrowOnError extends boolean = false>(options
                 type: 'http'
             }
         ],
-        url: '/fornecedores/{fornecedor_id}',
+        url: '/fornecedores/{id}',
         ...options
     });
 };
@@ -240,7 +240,7 @@ export const deleteProduto = <ThrowOnError extends boolean = false>(options: Opt
                 type: 'http'
             }
         ],
-        url: '/produtos/{produto_id}',
+        url: '/produtos/{id}',
         ...options
     });
 };
@@ -256,7 +256,7 @@ export const readProdutoById = <ThrowOnError extends boolean = false>(options: O
                 type: 'http'
             }
         ],
-        url: '/produtos/{produto_id}',
+        url: '/produtos/{id}',
         ...options
     });
 };
@@ -308,7 +308,7 @@ export const readVendaById = <ThrowOnError extends boolean = false>(options: Opt
                 type: 'http'
             }
         ],
-        url: '/vendas/{venda_id}',
+        url: '/vendas/{id}',
         ...options
     });
 };

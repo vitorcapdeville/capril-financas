@@ -10,7 +10,7 @@ services:
       - capril-financas-network
     env_file: ".env.local"
     environment:
-      - BACKEND_URL_SERVER=http://api:80
+      - BACKEND_URL=http://api:80
 networks:
   capril-financas-network:
     external: true

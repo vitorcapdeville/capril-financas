@@ -11,13 +11,15 @@ export const metadata = {
 client.setConfig({
   baseUrl: process.env.BACKEND_URL,
   auth: () => getToken(),
+  cache: "no-store",
 });
 
-// // Adicioanr lag nas requests para testar comportamento do app
-// client.interceptors.request.use(async (request) => {
-//   await new Promise((r) => setTimeout(r, 2000));
-//   return request;
-// });
+// Adicioanr lag nas requests para testar comportamento do app
+client.interceptors.request.use(async (request) => {
+  console.log("sleeping...");
+  await new Promise((r) => setTimeout(r, 500));
+  return request;
+});
 
 export default function RootLayout({
   children,

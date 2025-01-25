@@ -41,15 +41,14 @@ async function PaginatedItemList(
         subProperties,
     }: PaginatedItemList,
 ) {
-    const { data } = await readItemsFunction({
+    const { data: { data: items, count } } = await readItemsFunction({
         query: {
             query: search,
             skip: (page - 1) * pageSize,
             limit: pageSize,
         },
     });
-    const items: any = data.data;
-    const pageCount = Math.ceil(data.count / pageSize);
+    const pageCount = Math.ceil(count / pageSize);
 
     return (
         <>

@@ -38,15 +38,14 @@ export type CompraCreate = {
     data_compra: string;
     valor: number;
     categoria: string;
-    fornecedor_id: number;
 };
 
 export type CompraPublic = {
     data_compra: string;
     valor: number;
     categoria: string;
-    fornecedor_id: number;
     id: number;
+    fornecedor: FornecedorPublic;
 };
 
 export type ComprasPublic = {
@@ -72,18 +71,16 @@ export type HttpValidationError = {
     detail?: Array<ValidationError>;
 };
 
-export type Item = {
-    preco_unitario: number;
-    quantidade: number;
-    produto_id: number;
-    id?: number | null;
-    venda_id?: number | null;
-};
-
 export type ItemCreate = {
     preco_unitario: number;
     quantidade: number;
-    produto_id: number;
+};
+
+export type ItemPublic = {
+    preco_unitario: number;
+    quantidade: number;
+    id: number;
+    produto: ProdutoPublic;
 };
 
 export type ProdutoCreate = {
@@ -124,15 +121,14 @@ export type ValidationError = {
 export type VendaCreate = {
     data_venda: string;
     data_pagamento?: string | null;
-    cliente_id: number;
 };
 
 export type VendaPublic = {
     data_venda: string;
     data_pagamento?: string | null;
-    cliente_id: number;
     id: number;
-    items: Array<Item>;
+    items: Array<ItemPublic>;
+    cliente: ClientePublic;
 };
 
 export type VendasPublic = {
@@ -197,10 +193,10 @@ export type CreateClienteResponse = CreateClienteResponses[keyof CreateClienteRe
 export type DeleteClienteData = {
     body?: never;
     path: {
-        cliente_id: number;
+        id: number;
     };
     query?: never;
-    url: '/clientes/{cliente_id}';
+    url: '/clientes/{id}';
 };
 
 export type DeleteClienteErrors = {
@@ -224,10 +220,10 @@ export type DeleteClienteResponse = DeleteClienteResponses[keyof DeleteClienteRe
 export type ReadClienteByIdData = {
     body?: never;
     path: {
-        cliente_id: number;
+        id: number;
     };
     query?: never;
-    url: '/clientes/{cliente_id}';
+    url: '/clientes/{id}';
 };
 
 export type ReadClienteByIdErrors = {
@@ -305,10 +301,10 @@ export type CreateCompraResponse = CreateCompraResponses[keyof CreateCompraRespo
 export type ReadCompraByIdData = {
     body?: never;
     path: {
-        compra_id: number;
+        id: number;
     };
     query?: never;
-    url: '/compras/{compra_id}';
+    url: '/compras/{id}';
 };
 
 export type ReadCompraByIdErrors = {
@@ -386,10 +382,10 @@ export type CreateFornecedorResponse = CreateFornecedorResponses[keyof CreateFor
 export type DeleteFornecedorData = {
     body?: never;
     path: {
-        fornecedor_id: number;
+        id: number;
     };
     query?: never;
-    url: '/fornecedores/{fornecedor_id}';
+    url: '/fornecedores/{id}';
 };
 
 export type DeleteFornecedorErrors = {
@@ -413,10 +409,10 @@ export type DeleteFornecedorResponse = DeleteFornecedorResponses[keyof DeleteFor
 export type ReadFornecedorByIdData = {
     body?: never;
     path: {
-        fornecedor_id: number;
+        id: number;
     };
     query?: never;
-    url: '/fornecedores/{fornecedor_id}';
+    url: '/fornecedores/{id}';
 };
 
 export type ReadFornecedorByIdErrors = {
@@ -494,10 +490,10 @@ export type CreateProdutoResponse = CreateProdutoResponses[keyof CreateProdutoRe
 export type DeleteProdutoData = {
     body?: never;
     path: {
-        produto_id: number;
+        id: number;
     };
     query?: never;
-    url: '/produtos/{produto_id}';
+    url: '/produtos/{id}';
 };
 
 export type DeleteProdutoErrors = {
@@ -521,10 +517,10 @@ export type DeleteProdutoResponse = DeleteProdutoResponses[keyof DeleteProdutoRe
 export type ReadProdutoByIdData = {
     body?: never;
     path: {
-        produto_id: number;
+        id: number;
     };
     query?: never;
-    url: '/produtos/{produto_id}';
+    url: '/produtos/{id}';
 };
 
 export type ReadProdutoByIdErrors = {
@@ -602,10 +598,10 @@ export type CreateVendaResponse = CreateVendaResponses[keyof CreateVendaResponse
 export type ReadVendaByIdData = {
     body?: never;
     path: {
-        venda_id: number;
+        id: number;
     };
     query?: never;
-    url: '/vendas/{venda_id}';
+    url: '/vendas/{id}';
 };
 
 export type ReadVendaByIdErrors = {
