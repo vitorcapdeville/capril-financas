@@ -12,10 +12,9 @@ export async function createVendaAction(
     try {
         const response = await createVenda({
             body: {
-                venda: {
-                    data_venda: formData.get("dataVenda") as string,
-                    data_pagamento: formData.get("dataPagamento") as string,
-                },
+                data_venda: formData.get("dataVenda") as string,
+                data_pagamento: formData.get("dataPagamento") as string,
+                cliente_id: 0,
                 items: [],
             },
         });

@@ -7,9 +7,9 @@ import {
     SlBasket,
     SlBriefcase,
     SlHome,
-    SlPresent,
-    SlUser,
-    SlWallet,
+    // SlPresent,
+    // SlUser,
+    // SlWallet,
 } from "react-icons/sl";
 
 const links = [
