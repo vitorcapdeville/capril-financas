@@ -1,5 +1,5 @@
+import { signOutAction } from "@/app/actions/login";
 import { getCurrentUser } from "@/app/client/sdk.gen";
-import { signOutAction } from "@/app/lib/actions";
 import "@/app/ui/globals.css";
 import NavLinks from "@/app/ui/nav-links";
 import Image from "next/image";

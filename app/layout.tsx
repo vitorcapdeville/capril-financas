@@ -1,5 +1,4 @@
-import { client } from "@/app/client/sdk.gen";
-import { getToken } from "@/app/lib/actions";
+import { client } from "@/app/clientConfig";
 import "@/app/ui/globals.css";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
@@ -7,12 +6,6 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Capril Finanças",
 };
-
-client.setConfig({
-  baseUrl: process.env.BACKEND_URL,
-  auth: () => getToken(),
-  cache: "no-store",
-});
 
 // Adicioanr lag nas requests para testar comportamento do app
 client.interceptors.request.use(async (request) => {

@@ -1,9 +1,9 @@
 "use client";
 
-import { authenticate } from "@/app/lib/actions";
+import { authenticate } from "@/app/actions/login";
 import { ErrorDialog } from "@/app/ui/error-dialog";
+import PendingButton from "@/app/ui/form-components/pending-button";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -74,15 +74,11 @@ export default function LoginForm() {
                         name="redirectTo"
                         value={callbackUrl}
                     />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{ mt: 2 }}
-                        type="submit"
-                        disabled={isPending}
-                    >
-                        {isPending ? "Entrando..." : "Entrar"}
-                    </Button>
+                    <PendingButton
+                        isPending={isPending}
+                        text="Entrar"
+                        pendingText="Entrando..."
+                    />
                     <ErrorDialog errorMsg={errorMessage || null} />
                 </Box>
             </Box>
