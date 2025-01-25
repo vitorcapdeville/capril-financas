@@ -4,6 +4,7 @@ import { authConfig } from "@/auth.config";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
+import {client } from "@/app/client";
 
 function getPayloadFromToken(access_token: string): User {
     const encodedPayload = access_token.split(".")[1];
@@ -46,6 +47,8 @@ export const { auth, signIn, signOut } = NextAuth({
                         data = response.data;
                         error = response.error;
                     } catch (e) {
+                        console.log(e);
+                        console.log(client.getConfig());
                         throw Error("Falha de comunicação com a API.");
                     }
 
