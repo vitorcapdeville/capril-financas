@@ -19,9 +19,9 @@ const links = [
         href: "/dashboard/fornecedores",
         icon: SlBriefcase,
     },
-    { name: "Clientes", href: "/dashboard/clientes", icon: SlUser },
-    { name: "Produtos", href: "/dashboard/produtos", icon: SlPresent },
-    { name: "Vendas", href: "/dashboard/vendas", icon: SlWallet },
+    // { name: "Clientes", href: "/dashboard/clientes", icon: SlUser },
+    // { name: "Produtos", href: "/dashboard/produtos", icon: SlPresent },
+    // { name: "Vendas", href: "/dashboard/vendas", icon: SlWallet },
     { name: "Compras", href: "/dashboard/compras", icon: SlBasket },
 ];
 

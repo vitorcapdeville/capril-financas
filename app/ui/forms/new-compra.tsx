@@ -1,6 +1,7 @@
 "use client";
 
 import { createCompraAction } from "@/app/actions/compra";
+import { FornecedorPublic } from "@/app/client";
 import { ErrorDialog } from "@/app/ui/error-dialog";
 import {
     FormInputDate,
@@ -8,10 +9,14 @@ import {
     FormInputText,
 } from "@/app/ui/form-components/form-inputs";
 import PendingButton from "@/app/ui/form-components/pending-button";
+import { Autocomplete, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 
-export default function CompraForm() {
+export default function CompraForm(
+    { fornecedores }: { fornecedores: FornecedorPublic[] },
+) {
+    const [fornecedorId, setFornecedorId] = useState<number | null>(null);
     const [errorMessage, formAction, isPending] = useActionState(
         createCompraAction,
         "",
@@ -31,28 +36,38 @@ export default function CompraForm() {
                 label="Categoria"
             />
             {
-                /* <Autocomplete
+                /* Esse input passa o id pro formData associado ao autocomplete
+                Não consegui achar um jeito de pegar o id dentro do autocomplete */
+            }
+            <input
+                hidden
+                name="fornecedor_id"
+                type="number"
+                value={Number(fornecedorId)}
+                readOnly
+            />
+
+            <Autocomplete
                 disablePortal
                 options={fornecedores}
-                getOptionLabel={(option: Fornecedor) =>
+                getOptionKey={(option: FornecedorPublic) =>
+                    option.id}
+                getOptionLabel={(option: FornecedorPublic) =>
                     option.nome}
-                fullWidth
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="Fornecedor"
-                        required
-                    />
-                )}
-                onChange={(_, value) => {
-                    if (value) {
-                        setFornecedorId(value.id.toString());
-                    } else {
-                        setFornecedorId("");
-                    }
+                onChange={(e, value) => {
+                    setFornecedorId(value?.id || null);
                 }}
-            /> */
-            }
+                fullWidth
+                renderInput={(params) => {
+                    return (
+                        <TextField
+                            {...params}
+                            label="Fornecedor"
+                            required
+                        />
+                    );
+                }}
+            />
 
             <PendingButton
                 isPending={isPending}

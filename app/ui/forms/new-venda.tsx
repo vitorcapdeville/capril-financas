@@ -1,13 +1,21 @@
 "use client";
 
 import { createVendaAction } from "@/app/actions/venda";
+import { ClientePublic, ProdutoPublic } from "@/app/client";
 import { ErrorDialog } from "@/app/ui/error-dialog";
 import { FormInputDate } from "@/app/ui/form-components/form-inputs";
 import PendingButton from "@/app/ui/form-components/pending-button";
+import { Autocomplete, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 
-export default function CompraForm() {
+export default function CompraForm(
+    { clientes, produtos }: {
+        clientes: ClientePublic[];
+        produtos: ProdutoPublic[];
+    },
+) {
+    const [clienteId, setClienteId] = useState<number | null>(null);
     const [errorMessage, formAction, isPending] = useActionState(
         createVendaAction,
         "",
@@ -22,27 +30,30 @@ export default function CompraForm() {
                 name="dataPagamento"
                 label="Data do pagamento"
             />
+            <input
+                hidden
+                name="cliente_id"
+                value={Number(clienteId)}
+                readOnly
+            />
+            <Autocomplete
+                disablePortal
+                options={clientes}
+                getOptionLabel={(option: ClientePublic) => option.nome}
+                fullWidth
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label="Cliente"
+                        required
+                    />
+                )}
+                onChange={(_, value) => {
+                    setClienteId(value?.id || null);
+                }}
+            />
             {
-                /* <Autocomplete
-                    disablePortal
-                    options={clientes}
-                    getOptionLabel={(option: Cliente) => option.nome}
-                    fullWidth
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Cliente"
-                            required
-                        />
-                    )}
-                    onChange={(_, value) => {
-                        if (value) {
-                            setClienteId(value.id.toString());
-                        } else {
-                            setClienteId("");
-                        }
-                    }}
-                />
+                /*
                 <Typography variant="h6" component="h2" gutterBottom>
                     Itens
                 </Typography>

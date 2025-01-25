@@ -8,13 +8,14 @@ export async function createCompraAction(
     formData: FormData,
 ) {
     let error;
-
+    console.log(formData);
     try {
         const response = await createCompra({
             body: {
                 categoria: formData.get("categoria") as string,
                 data_compra: formData.get("dataCompra") as string,
                 valor: Number(formData.get("valor")),
+                fornecedor_id: Number(formData.get("fornecedor_id")),
             },
         });
         error = response.error;
