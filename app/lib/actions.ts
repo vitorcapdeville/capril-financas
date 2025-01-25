@@ -3,7 +3,7 @@ import { auth, signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 
 export async function authenticate(
-    prevState: { errorMessage: string; trialNumber: number } | undefined,
+    prevState: string | undefined,
     formData: FormData,
 ) {
     try {
@@ -12,21 +12,12 @@ export async function authenticate(
         if (error instanceof AuthError) {
             switch (error.type) {
                 case "CredentialsSignin":
-                    return {
-                        errorMessage: "Email ou senha inválidos.",
-                        trialNumber: prevState ? prevState.trialNumber + 1 : 1,
-                    };
+                    return "Email ou senha inválidos.";
                 case "CallbackRouteError":
-                    return {
-                        errorMessage: error.cause?.err?.message ||
-                            "Algo deu errado.",
-                        trialNumber: prevState ? prevState.trialNumber + 1 : 1,
-                    };
+                    return error.cause?.err?.message ||
+                        "Algo deu errado.";
                 default:
-                    return {
-                        errorMessage: "Algo deu errado.",
-                        trialNumber: prevState ? prevState.trialNumber + 1 : 1,
-                    };
+                    return "Algo deu errado.";
             }
         }
         throw error;

@@ -1,35 +1,23 @@
 "use client";
 
 import { authenticate } from "@/app/lib/actions";
+import { ErrorDialog } from "@/app/ui/error-dialog";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState } from "react";
 
 export default function LoginForm() {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
-    const [data, formAction, isPending] = useActionState(
+    const [errorMessage, formAction, isPending] = useActionState(
         authenticate,
-        { errorMessage: "", trialNumber: 0 },
+        "",
     );
-
-    const [open, setOpen] = useState(false);
-
-    useEffect(() => {
-        if (data?.errorMessage) {
-            setOpen(true);
-        }
-    }, [data?.errorMessage, data?.trialNumber]);
 
     return (
         <Container
@@ -95,24 +83,7 @@ export default function LoginForm() {
                     >
                         {isPending ? "Entrando..." : "Entrar"}
                     </Button>
-                    <Dialog
-                        open={open}
-                        onClose={() => setOpen(false)}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        <DialogTitle id="alert-dialog-title">Erro</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                {data?.errorMessage}
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={() => setOpen(false)} autoFocus>
-                                Fechar
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
+                    <ErrorDialog errorMsg={errorMessage || null} />
                 </Box>
             </Box>
         </Container>
