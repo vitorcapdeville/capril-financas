@@ -1,27 +1,22 @@
-"use client";
-
 import { Button } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useEffect, useState } from "react";
 
-export function ErrorDialog({ errorMsg }: { errorMsg: string | null }) {
-    const [open, setOpen] = useState(false);
-
-    useEffect(() => {
-        if (errorMsg) {
-            setOpen(true);
-        }
-    }, [errorMsg]);
-
+export function ErrorDialog(
+    { errorMsg, open, handleClose }: {
+        errorMsg: string | null;
+        open: boolean;
+        handleClose: () => void;
+    },
+) {
     return (
         <>
             <Dialog
                 open={open}
-                onClose={() => setOpen(false)}
+                onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -32,7 +27,7 @@ export function ErrorDialog({ errorMsg }: { errorMsg: string | null }) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpen(false)} autoFocus>
+                    <Button onClick={handleClose} autoFocus>
                         Fechar
                     </Button>
                 </DialogActions>

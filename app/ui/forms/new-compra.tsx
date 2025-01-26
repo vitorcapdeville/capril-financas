@@ -21,8 +21,18 @@ export default function CompraForm(
         createCompraAction,
         "",
     );
+    const [open, setOpen] = useState(false);
+
     return (
-        <Box component="form" noValidate autoComplete="off" action={formAction}>
+        <Box
+            component="form"
+            noValidate
+            autoComplete="off"
+            action={(formData) => {
+                formAction(formData);
+                setOpen(true);
+            }}
+        >
             <FormInputDate
                 name="dataCompra"
                 label="Data da Compra"
@@ -50,10 +60,8 @@ export default function CompraForm(
             <Autocomplete
                 disablePortal
                 options={fornecedores}
-                getOptionKey={(option: FornecedorPublic) =>
-                    option.id}
-                getOptionLabel={(option: FornecedorPublic) =>
-                    option.nome}
+                getOptionKey={(option: FornecedorPublic) => option.id}
+                getOptionLabel={(option: FornecedorPublic) => option.nome}
                 onChange={(e, value) => {
                     setFornecedorId(value?.id || null);
                 }}
@@ -74,7 +82,11 @@ export default function CompraForm(
                 text="Adicionar"
                 pendingText="Adicionando..."
             />
-            <ErrorDialog errorMsg={errorMessage || null} />
+            <ErrorDialog
+                errorMsg={errorMessage || null}
+                open={open}
+                handleClose={() => setOpen(false)}
+            />
         </Box>
     );
 }

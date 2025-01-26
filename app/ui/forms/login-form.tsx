@@ -9,7 +9,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 
 export default function LoginForm() {
     const searchParams = useSearchParams();
@@ -18,6 +18,7 @@ export default function LoginForm() {
         authenticate,
         "",
     );
+    const [open, setOpen] = useState(false);
 
     return (
         <Container
@@ -53,7 +54,10 @@ export default function LoginForm() {
                     component="form"
                     noValidate
                     autoComplete="off"
-                    action={formAction}
+                    action={(formData) => {
+                        formAction(formData);
+                        setOpen(true);
+                    }}
                 >
                     <TextField
                         fullWidth
@@ -79,7 +83,11 @@ export default function LoginForm() {
                         text="Entrar"
                         pendingText="Entrando..."
                     />
-                    <ErrorDialog errorMsg={errorMessage || null} />
+                    <ErrorDialog
+                        errorMsg={errorMessage || null}
+                        open={open}
+                        handleClose={() => setOpen(false)}
+                    />
                 </Box>
             </Box>
         </Container>
