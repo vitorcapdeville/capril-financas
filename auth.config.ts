@@ -8,10 +8,14 @@ export const authConfig = {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
             const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
-            if (nextUrl.pathname == "/") return false;
+            console.log(nextUrl.pathname);
+            if (nextUrl.pathname == "/") {
+                // Redireciona para /dashboard e restarta o fluxo de auth, ja q "/" não existe.
+                return Response.redirect(new URL("/dashboard", nextUrl)); 
+            }
             if (isOnDashboard) {
                 if (isLoggedIn) return true;
-                return false; // Redirect unauthenticated users to login page
+                return false;
             } else if (isLoggedIn) {
                 return Response.redirect(new URL("/dashboard", nextUrl));
             }
