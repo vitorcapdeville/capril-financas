@@ -1,6 +1,5 @@
 "use server";
 
-import { BackButton } from "@/app/ui/buttons";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { LinearProgress } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -12,6 +11,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { HeaderWithBackButton } from "./header-with-back-button";
 
 type ItemDetailsProps = {
     readItemByIdFunction: any;
@@ -63,9 +63,8 @@ export default async function ItemDetails(
 ) {
     return (
         <Container maxWidth="sm">
-            <Typography variant="h4" component="h1" gutterBottom>
-                Detalhes
-            </Typography>
+            <HeaderWithBackButton text="Detalhes" />
+
             <Box sx={{ mb: 2 }}>
                 <Suspense fallback={<LinearProgress />}>
                     <ReadOnlyFields
@@ -73,7 +72,6 @@ export default async function ItemDetails(
                     />
                 </Suspense>
             </Box>
-            <BackButton />
         </Container>
     );
 }

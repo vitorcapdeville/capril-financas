@@ -27,7 +27,7 @@ const Search = (
             onChange={handleChange}
             id="outlined-start-adornment"
             fullWidth
-            margin="normal"
+            margin="none"
             slotProps={{
                 input: {
                     startAdornment: <SearchIcon />,

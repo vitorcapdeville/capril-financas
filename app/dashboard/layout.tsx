@@ -2,9 +2,9 @@ import { signOutAction } from "@/app/actions/login";
 import { getCurrentUser } from "@/app/client/sdk.gen";
 import "@/app/ui/globals.css";
 import NavLinks from "@/app/ui/nav-links";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { Grid2, IconButton } from "@mui/material";
 import Image from "next/image";
-import { SlLogout } from "react-icons/sl";
-
 export const dynamic = "force-dynamic";
 
 export default async function Layout({
@@ -26,16 +26,30 @@ export default async function Layout({
             width={150}
             height={100}
           />
-          <div className="flex space-x-2">
-            <p>{user.email}</p>
-            <form
-              action={signOutAction}
+          <Grid2 container spacing={0.5}>
+            <Grid2
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              size={10}
             >
-              <button>
-                <SlLogout />
-              </button>
-            </form>
-          </div>
+              <p>{user.email}</p>
+            </Grid2>
+            <Grid2
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              size={2}
+            >
+              <form
+                action={signOutAction}
+              >
+                <IconButton type="submit" size="small">
+                  <LogoutIcon sx={{ color: "white" }} />
+                </IconButton>
+              </form>
+            </Grid2>
+          </Grid2>
         </div>
         <NavLinks />
       </aside>

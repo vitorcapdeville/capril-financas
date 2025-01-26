@@ -1,13 +1,12 @@
 import ProdutoForm from "@/app/ui/forms/new-produto";
+import { HeaderWithBackButton } from "@/app/ui/header-with-back-button";
 import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
 
 export default async function NovoProduto() {
     return (
         <Container maxWidth="sm">
-            <Typography variant="h4" component="h1" gutterBottom>
-                Novo Produto
-            </Typography>
+            <HeaderWithBackButton text="Novo produto" />
+
             <ProdutoForm />
         </Container>
     );

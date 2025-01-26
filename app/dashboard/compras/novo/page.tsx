@@ -1,7 +1,7 @@
 import { readFornecedores } from "@/app/client";
 import CompraForm from "@/app/ui/forms/new-compra";
+import { HeaderWithBackButton } from "@/app/ui/header-with-back-button";
 import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
 
 export default async function NovaCompra() {
     const { data } = await readFornecedores({
@@ -11,9 +11,7 @@ export default async function NovaCompra() {
 
     return (
         <Container maxWidth="sm">
-            <Typography variant="h4" component="h1" gutterBottom>
-                Nova Compra
-            </Typography>
+            <HeaderWithBackButton text="Nova compra" />
             <CompraForm fornecedores={fornecedores} />
         </Container>
     );

@@ -7,19 +7,17 @@ export default async function Produtos(
 ) {
     const pageSize = 5;
     return (
-        <div>
-            <SearchablePaginatedItemList
-                searchParams={searchParams}
-                readItemsFunction={readProdutos}
-                countItemsFunction={countProdutos}
-                pageSize={pageSize}
-                mainProperty="nome"
-                subProperties={[{
-                    key: "peso_em_gramas",
-                    callback: (item: string) => item + "g",
-                }]}
-                routeName="produtos"
-            />
-        </div>
+        <SearchablePaginatedItemList
+            searchParams={searchParams}
+            readItemsFunction={readProdutos}
+            countItemsFunction={countProdutos}
+            pageSize={pageSize}
+            mainProperty="nome"
+            subProperties={[{
+                key: "peso_em_gramas",
+                callback: (item: string) => item + "g",
+            }]}
+            routeName="produtos"
+        />
     );
 }

@@ -6,22 +6,19 @@ export default async function Vendas(
     { searchParams }: { searchParams: SearchParams },
 ) {
     const pageSize = 5;
-
     return (
-        <div>
-            <SearchablePaginatedItemList
-                searchParams={searchParams}
-                readItemsFunction={readVendas}
-                countItemsFunction={countVendas}
-                pageSize={pageSize}
-                mainProperty="id"
-                subProperties={[{
-                    key: "data_venda",
-                    callback: (item: string) =>
-                        new Date(item).toLocaleDateString("pt-BR"),
-                }]}
-                routeName="vendas"
-            />
-        </div>
+        <SearchablePaginatedItemList
+            searchParams={searchParams}
+            readItemsFunction={readVendas}
+            countItemsFunction={countVendas}
+            pageSize={pageSize}
+            mainProperty="id"
+            subProperties={[{
+                key: "data_venda",
+                callback: (item: string) =>
+                    new Date(item).toLocaleDateString("pt-BR"),
+            }]}
+            routeName="vendas"
+        />
     );
 }

@@ -1,7 +1,7 @@
 import { SearchParams } from "@/app/lib/definitions";
 import Search from "@/app/ui/search";
-import { LinearProgress } from "@mui/material";
-import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
+import { Box, Fab, Grid2, LinearProgress, Stack } from "@mui/material";
 import Link from "next/link";
 import { Suspense } from "react";
 import PaginationMUI from "./pagination";
@@ -121,12 +121,33 @@ export default async function SearchablePaginatedItemList(
     const keyString = `search=${search}&page=${page}`; //  <-- Construct key from searchParams
 
     return (
-        <>
+        <Stack spacing={0.7}>
             <h1 className="text-2xl font-bold mb-4">
                 {capitalize(props.routeName)}
             </h1>
-
-            <Search routeName={props.routeName} />
+            <Grid2 container spacing={1}>
+                <Grid2
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    size={11.5}
+                >
+                    <Search routeName={props.routeName} />
+                </Grid2>
+                <Grid2
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    size={0.5}
+                >
+                    <Link href={`/dashboard/${props.routeName}/novo`}>
+                        <Fab color="primary" aria-label="add" size="small">
+                            <AddIcon />
+                        </Fab>
+                    </Link>
+                </Grid2>
+            </Grid2>
+            <Box></Box>
             <Suspense fallback={<LinearProgress />} key={keyString}>
                 <ItemList
                     search={search || ""}
@@ -138,21 +159,27 @@ export default async function SearchablePaginatedItemList(
                     subProperties={props.subProperties}
                 />
             </Suspense>
-
-            <Suspense fallback={<LinearProgress />} key={keyString + "2"}>
-                <Pagination
-                    countItemsFunction={props.countItemsFunction}
-                    selectedSearch={search || ""}
-                    selectedPage={page}
-                    pageSize={props.pageSize}
-                    pathname={`/dashboard/${props.routeName}`}
-                />
-            </Suspense>
-            <Link href={`/dashboard/${props.routeName}/novo`}>
-                <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-                    Adicionar
-                </Button>
-            </Link>
-        </>
+            <Grid2 container>
+                <Grid2
+                    display="flex"
+                    justifyContent="right"
+                    alignItems="center"
+                    size={12}
+                >
+                    <Suspense
+                        fallback={<LinearProgress />}
+                        key={keyString + "2"}
+                    >
+                        <Pagination
+                            countItemsFunction={props.countItemsFunction}
+                            selectedSearch={search || ""}
+                            selectedPage={page}
+                            pageSize={props.pageSize}
+                            pathname={`/dashboard/${props.routeName}`}
+                        />
+                    </Suspense>
+                </Grid2>
+            </Grid2>
+        </Stack>
     );
 }
