@@ -1,17 +1,13 @@
 "use client";
-import { Button } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { IconButton } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 export function BackButton() {
     const router = useRouter();
     return (
-        <Button
-            variant="contained"
-            color="primary"
-            onClick={() => router.back()}
-            sx={{ mt: 2 }}
-        >
-            Voltar
-        </Button>
+        <IconButton aria-label="delete" onClick={() => router.back()}>
+            <ArrowBackIcon />
+        </IconButton>
     );
 }
