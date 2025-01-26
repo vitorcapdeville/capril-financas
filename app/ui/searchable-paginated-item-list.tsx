@@ -1,10 +1,10 @@
 import { SearchParams } from "@/app/lib/definitions";
-import Pagination from "@/app/ui/pagination";
 import Search from "@/app/ui/search";
 import { LinearProgress } from "@mui/material";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 import { Suspense } from "react";
+import PaginationMUI from "./pagination";
 
 interface SubProperties {
     key: string;
@@ -13,7 +13,6 @@ interface SubProperties {
 
 interface BaseProps {
     readItemsFunction: any;
-    countItemsFunction: any;
     pageSize: number;
     routeName: string;
     mainProperty: string;
@@ -22,6 +21,7 @@ interface BaseProps {
 
 interface SearchablePaginatedItemListProps extends BaseProps {
     searchParams: SearchParams;
+    countItemsFunction: any;
 }
 interface PaginatedItemList extends BaseProps {
     search: string;
@@ -32,13 +32,38 @@ const capitalize = function (string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-async function PaginatedItemList(
+async function Pagination(
+    { countItemsFunction, selectedSearch, selectedPage, pageSize, pathname }: {
+        countItemsFunction: any;
+        selectedSearch: string;
+        selectedPage: number;
+        pageSize: number;
+        pathname: string;
+    },
+) {
+    const { data: count } = await countItemsFunction({
+        query: {
+            query: selectedSearch,
+        },
+    });
+    const pageCount = Math.ceil(count / pageSize);
+
+    return (
+        <PaginationMUI
+            pageCount={pageCount}
+            pathname={pathname}
+            selectedPage={selectedPage}
+            selectedSearch={selectedSearch}
+        />
+    );
+}
+
+async function ItemList(
     {
         search,
         page,
         pageSize,
         readItemsFunction,
-        countItemsFunction,
         routeName,
         mainProperty,
         subProperties,
@@ -51,12 +76,6 @@ async function PaginatedItemList(
             limit: pageSize,
         },
     });
-    const { data: count } = await countItemsFunction({
-        query: {
-            query: search,
-        },
-    });
-    const pageCount = Math.ceil(count / pageSize);
 
     return (
         <>
@@ -84,10 +103,6 @@ async function PaginatedItemList(
                     </li>
                 ))}
             </ul>
-
-            <Pagination
-                count={pageCount}
-            />
         </>
     );
 }
@@ -102,6 +117,8 @@ export default async function SearchablePaginatedItemList(
         ? params.search
         : undefined;
 
+    const keyString = `search=${search}&page=${page}`; //  <-- Construct key from searchParams
+
     return (
         <>
             <h1 className="text-2xl font-bold mb-4">
@@ -109,16 +126,22 @@ export default async function SearchablePaginatedItemList(
             </h1>
 
             <Search routeName={props.routeName} />
-            <Suspense fallback={<LinearProgress />}>
-                <PaginatedItemList
+            <Suspense fallback={<LinearProgress />} key={keyString}>
+                <ItemList
                     search={search || ""}
                     page={page}
                     readItemsFunction={props.readItemsFunction}
-                    countItemsFunction={props.countItemsFunction}
                     pageSize={props.pageSize}
                     routeName={props.routeName}
                     mainProperty={props.mainProperty}
                     subProperties={props.subProperties}
+                />
+                <Pagination
+                    countItemsFunction={props.countItemsFunction}
+                    selectedSearch={search || ""}
+                    selectedPage={page}
+                    pageSize={props.pageSize}
+                    pathname={`/dashboard/${props.routeName}`}
                 />
             </Suspense>
             <Link href={`/dashboard/${props.routeName}/novo`}>
