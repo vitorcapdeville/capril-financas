@@ -1,4 +1,4 @@
-import { readCompras } from "@/app/client";
+import { countCompras, readCompras } from "@/app/client";
 import { SearchParams } from "@/app/lib/definitions";
 import SearchablePaginatedItemList from "@/app/ui/searchable-paginated-item-list";
 
@@ -10,6 +10,7 @@ export default async function Compras(
         <SearchablePaginatedItemList
             searchParams={searchParams}
             readItemsFunction={readCompras}
+            countItemsFunction={countCompras}
             pageSize={pageSize}
             mainProperty="categoria"
             subProperties={[{

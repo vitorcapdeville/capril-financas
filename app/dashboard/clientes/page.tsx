@@ -1,4 +1,4 @@
-import { readClientes } from "@/app/client";
+import { countClientes, readClientes } from "@/app/client";
 import { SearchParams } from "@/app/lib/definitions";
 import SearchablePaginatedItemList from "@/app/ui/searchable-paginated-item-list";
 
@@ -10,6 +10,7 @@ export default async function Clientes(
         <SearchablePaginatedItemList
             searchParams={searchParams}
             readItemsFunction={readClientes}
+            countItemsFunction={countClientes}
             pageSize={pageSize}
             mainProperty="nome"
             subProperties={[{

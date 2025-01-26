@@ -24,11 +24,6 @@ export type ClientePublic = {
     id: number;
 };
 
-export type ClientesPublic = {
-    data: Array<ClientePublic>;
-    count: number;
-};
-
 export type CompraCreate = {
     data_compra: string;
     valor: number;
@@ -44,11 +39,6 @@ export type CompraPublic = {
     fornecedor: FornecedorPublic;
 };
 
-export type ComprasPublic = {
-    data: Array<CompraPublic>;
-    count: number;
-};
-
 export type FornecedorCreate = {
     nome: string;
 };
@@ -56,11 +46,6 @@ export type FornecedorCreate = {
 export type FornecedorPublic = {
     nome: string;
     id: number;
-};
-
-export type FornecedoresPublic = {
-    data: Array<FornecedorPublic>;
-    count: number;
 };
 
 export type HttpValidationError = {
@@ -89,11 +74,6 @@ export type ProdutoPublic = {
     nome: string;
     peso_em_gramas: number;
     id: number;
-};
-
-export type ProdutosPublic = {
-    data: Array<ProdutoPublic>;
-    count: number;
 };
 
 export type Token = {
@@ -130,11 +110,6 @@ export type VendaPublic = {
     cliente: ClientePublic;
 };
 
-export type VendasPublic = {
-    data: Array<VendaPublic>;
-    count: number;
-};
-
 export type ReadClientesData = {
     body?: never;
     path?: never;
@@ -159,7 +134,7 @@ export type ReadClientesResponses = {
     /**
      * Successful Response
      */
-    200: ClientesPublic;
+    200: Array<ClientePublic>;
 };
 
 export type ReadClientesResponse = ReadClientesResponses[keyof ReadClientesResponses];
@@ -188,6 +163,33 @@ export type CreateClienteResponses = {
 };
 
 export type CreateClienteResponse = CreateClienteResponses[keyof CreateClienteResponses];
+
+export type CountClientesData = {
+    body?: never;
+    path?: never;
+    query?: {
+        query?: string | null;
+    };
+    url: '/clientes/count';
+};
+
+export type CountClientesErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type CountClientesError = CountClientesErrors[keyof CountClientesErrors];
+
+export type CountClientesResponses = {
+    /**
+     * Successful Response
+     */
+    200: number;
+};
+
+export type CountClientesResponse = CountClientesResponses[keyof CountClientesResponses];
 
 export type DeleteClienteData = {
     body?: never;
@@ -267,7 +269,7 @@ export type ReadComprasResponses = {
     /**
      * Successful Response
      */
-    200: ComprasPublic;
+    200: Array<CompraPublic>;
 };
 
 export type ReadComprasResponse = ReadComprasResponses[keyof ReadComprasResponses];
@@ -296,6 +298,33 @@ export type CreateCompraResponses = {
 };
 
 export type CreateCompraResponse = CreateCompraResponses[keyof CreateCompraResponses];
+
+export type CountComprasData = {
+    body?: never;
+    path?: never;
+    query?: {
+        query?: string | null;
+    };
+    url: '/compras/count';
+};
+
+export type CountComprasErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type CountComprasError = CountComprasErrors[keyof CountComprasErrors];
+
+export type CountComprasResponses = {
+    /**
+     * Successful Response
+     */
+    200: number;
+};
+
+export type CountComprasResponse = CountComprasResponses[keyof CountComprasResponses];
 
 export type ReadCompraByIdData = {
     body?: never;
@@ -348,7 +377,7 @@ export type ReadFornecedoresResponses = {
     /**
      * Successful Response
      */
-    200: FornecedoresPublic;
+    200: Array<FornecedorPublic>;
 };
 
 export type ReadFornecedoresResponse = ReadFornecedoresResponses[keyof ReadFornecedoresResponses];
@@ -377,6 +406,33 @@ export type CreateFornecedorResponses = {
 };
 
 export type CreateFornecedorResponse = CreateFornecedorResponses[keyof CreateFornecedorResponses];
+
+export type CountFornecedoresData = {
+    body?: never;
+    path?: never;
+    query?: {
+        query?: string | null;
+    };
+    url: '/fornecedores/count';
+};
+
+export type CountFornecedoresErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type CountFornecedoresError = CountFornecedoresErrors[keyof CountFornecedoresErrors];
+
+export type CountFornecedoresResponses = {
+    /**
+     * Successful Response
+     */
+    200: number;
+};
+
+export type CountFornecedoresResponse = CountFornecedoresResponses[keyof CountFornecedoresResponses];
 
 export type DeleteFornecedorData = {
     body?: never;
@@ -456,7 +512,7 @@ export type ReadProdutosResponses = {
     /**
      * Successful Response
      */
-    200: ProdutosPublic;
+    200: Array<ProdutoPublic>;
 };
 
 export type ReadProdutosResponse = ReadProdutosResponses[keyof ReadProdutosResponses];
@@ -485,6 +541,33 @@ export type CreateProdutoResponses = {
 };
 
 export type CreateProdutoResponse = CreateProdutoResponses[keyof CreateProdutoResponses];
+
+export type CountProdutosData = {
+    body?: never;
+    path?: never;
+    query?: {
+        query?: string | null;
+    };
+    url: '/produtos/count';
+};
+
+export type CountProdutosErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type CountProdutosError = CountProdutosErrors[keyof CountProdutosErrors];
+
+export type CountProdutosResponses = {
+    /**
+     * Successful Response
+     */
+    200: number;
+};
+
+export type CountProdutosResponse = CountProdutosResponses[keyof CountProdutosResponses];
 
 export type DeleteProdutoData = {
     body?: never;
@@ -564,7 +647,7 @@ export type ReadVendasResponses = {
     /**
      * Successful Response
      */
-    200: VendasPublic;
+    200: Array<VendaPublic>;
 };
 
 export type ReadVendasResponse = ReadVendasResponses[keyof ReadVendasResponses];
@@ -593,6 +676,33 @@ export type CreateVendaResponses = {
 };
 
 export type CreateVendaResponse = CreateVendaResponses[keyof CreateVendaResponses];
+
+export type CountVendasData = {
+    body?: never;
+    path?: never;
+    query?: {
+        query?: string | null;
+    };
+    url: '/vendas/count';
+};
+
+export type CountVendasErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type CountVendasError = CountVendasErrors[keyof CountVendasErrors];
+
+export type CountVendasResponses = {
+    /**
+     * Successful Response
+     */
+    200: number;
+};
+
+export type CountVendasResponse = CountVendasResponses[keyof CountVendasResponses];
 
 export type ReadVendaByIdData = {
     body?: never;

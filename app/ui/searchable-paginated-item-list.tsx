@@ -13,6 +13,7 @@ interface SubProperties {
 
 interface BaseProps {
     readItemsFunction: any;
+    countItemsFunction: any;
     pageSize: number;
     routeName: string;
     mainProperty: string;
@@ -37,16 +38,22 @@ async function PaginatedItemList(
         page,
         pageSize,
         readItemsFunction,
+        countItemsFunction,
         routeName,
         mainProperty,
         subProperties,
     }: PaginatedItemList,
 ) {
-    const { data: { data: items, count } } = await readItemsFunction({
+    const { data: items } = await readItemsFunction({
         query: {
             query: search,
             skip: (page - 1) * pageSize,
             limit: pageSize,
+        },
+    });
+    const { data: count } = await countItemsFunction({
+        query: {
+            query: search,
         },
     });
     const pageCount = Math.ceil(count / pageSize);
@@ -107,6 +114,7 @@ export default async function SearchablePaginatedItemList(
                     search={search || ""}
                     page={page}
                     readItemsFunction={props.readItemsFunction}
+                    countItemsFunction={props.countItemsFunction}
                     pageSize={props.pageSize}
                     routeName={props.routeName}
                     mainProperty={props.mainProperty}

@@ -1,4 +1,4 @@
-import { readVendas } from "@/app/client";
+import { countVendas, readVendas } from "@/app/client";
 import { SearchParams } from "@/app/lib/definitions";
 import SearchablePaginatedItemList from "@/app/ui/searchable-paginated-item-list";
 
@@ -12,6 +12,7 @@ export default async function Vendas(
             <SearchablePaginatedItemList
                 searchParams={searchParams}
                 readItemsFunction={readVendas}
+                countItemsFunction={countVendas}
                 pageSize={pageSize}
                 mainProperty="id"
                 subProperties={[{

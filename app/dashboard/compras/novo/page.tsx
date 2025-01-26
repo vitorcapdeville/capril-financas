@@ -7,7 +7,7 @@ export default async function NovaCompra() {
     const { data } = await readFornecedores({
         query: { limit: 10000, skip: 0, query: "" },
     });
-    const fornecedores = data?.data || [];
+    const fornecedores = data || [];
 
     return (
         <Container maxWidth="sm">

@@ -1,4 +1,4 @@
-import { readFornecedores } from "@/app/client";
+import { countFornecedores, readFornecedores } from "@/app/client";
 import { SearchParams } from "@/app/lib/definitions";
 import SearchablePaginatedItemList from "@/app/ui/searchable-paginated-item-list";
 
@@ -10,6 +10,7 @@ export default async function Fornecedores(
         <SearchablePaginatedItemList
             searchParams={searchParams}
             readItemsFunction={readFornecedores}
+            countItemsFunction={countFornecedores}
             pageSize={pageSize}
             mainProperty="nome"
             subProperties={[{

@@ -23,7 +23,7 @@ const Pagination = (
             page={selectedPage}
             count={count}
             renderItem={(item) => {
-                let query: Query = {
+                const query: Query = {
                     page: item.page,
                 };
 
