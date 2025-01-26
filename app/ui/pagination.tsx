@@ -1,28 +1,47 @@
 "use client";
 
-import { Pagination as PaginationMUI } from "@mui/material";
-import { useRouter, useSearchParams } from "next/navigation";
+import { PaginationItem, Pagination as PaginationMUI } from "@mui/material";
+import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
+
+type Query = {
+    page: number | null;
+    search?: string;
+};
 
 const Pagination = (
     { count }: {
         count: number;
     },
 ) => {
+    const pathname = usePathname();
     const searchParams = useSearchParams();
     const selectedPage = Number(searchParams.get("page")) || 1;
-    const router = useRouter();
-
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        const params = new URLSearchParams(searchParams.toString());
-        params.set("page", value.toString());
-        router.push(`?${params.toString()}`);
-    };
 
     return (
         <PaginationMUI
-            count={count}
             page={selectedPage}
-            onChange={handleChange}
+            count={count}
+            renderItem={(item) => {
+                let query: Query = {
+                    page: item.page,
+                };
+
+                if (searchParams.get("search")) {
+                    query["search"] = searchParams.get("search") as string;
+                }
+
+                return (
+                    <PaginationItem
+                        component={Link}
+                        href={{
+                            pathname: pathname,
+                            query: query,
+                        }}
+                        {...item}
+                    />
+                );
+            }}
         />
     );
 };
