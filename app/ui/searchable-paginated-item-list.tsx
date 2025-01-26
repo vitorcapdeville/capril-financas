@@ -90,6 +90,7 @@ export default async function SearchablePaginatedItemList(
             limit: props.pageSize,
         },
     });
+
     const pageCount = Math.ceil(count / props.pageSize);
 
     return (
@@ -98,7 +99,7 @@ export default async function SearchablePaginatedItemList(
                 {capitalize(props.routeName)}
             </h1>
 
-            <Search search={search} routeName={props.routeName} />
+            <Search routeName={props.routeName} />
             <Suspense fallback={<div>Carregando...</div>}>
                 <PaginatedItemList
                     items={items}
