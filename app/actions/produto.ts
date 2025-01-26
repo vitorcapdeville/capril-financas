@@ -1,6 +1,7 @@
 "use server";
 
 import { createProduto } from "@/app/client";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createProdutoAction(
@@ -25,5 +26,7 @@ export async function createProdutoAction(
         console.log(error);
         return "Falha ao registrar o produto.";
     }
+
+    revalidatePath("/dashboard/produtos");
     redirect("/dashboard/produtos");
 }

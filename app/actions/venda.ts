@@ -1,6 +1,7 @@
 "use server";
 
 import { createVenda } from "@/app/client";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createVendaAction(
@@ -27,5 +28,6 @@ export async function createVendaAction(
         console.log(error);
         return "Falha ao registrar a venda.";
     }
+    revalidatePath("/dashboard/vendas");
     redirect("/dashboard/vendas");
 }

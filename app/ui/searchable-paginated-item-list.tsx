@@ -46,6 +46,7 @@ async function Pagination(
             query: selectedSearch,
         },
     });
+
     const pageCount = Math.ceil(count / pageSize);
 
     return (
@@ -136,6 +137,9 @@ export default async function SearchablePaginatedItemList(
                     mainProperty={props.mainProperty}
                     subProperties={props.subProperties}
                 />
+            </Suspense>
+
+            <Suspense fallback={<LinearProgress />} key={keyString + "2"}>
                 <Pagination
                     countItemsFunction={props.countItemsFunction}
                     selectedSearch={search || ""}

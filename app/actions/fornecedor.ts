@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 // Além disso, parece que simplesmente importar em alguma das actions resolve para as outras.
 // Estranhamente, o login funciona.
 import { client } from "@/app/clientConfig";
+import { revalidatePath } from "next/cache";
 
 export async function createFornecedorAction(
     prevState: string | undefined,
@@ -30,5 +31,6 @@ export async function createFornecedorAction(
         console.log(error);
         return "Falha ao registrar o fornecedor.";
     }
+    revalidatePath("/dashboard/fornecedores");
     redirect("/dashboard/fornecedores");
 }

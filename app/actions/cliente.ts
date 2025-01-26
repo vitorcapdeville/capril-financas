@@ -1,6 +1,7 @@
 "use server";
 
 import { createCliente } from "@/app/client";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createClienteAction(
@@ -27,5 +28,6 @@ export async function createClienteAction(
         console.log(error);
         return "Falha ao registrar o cliente.";
     }
+    revalidatePath("/dashboard/clientes");
     redirect("/dashboard/clientes");
 }

@@ -1,6 +1,7 @@
 "use server";
 
 import { createCompra } from "@/app/client";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createCompraAction(
@@ -26,5 +27,6 @@ export async function createCompraAction(
         console.log(error);
         return "Falha ao registrar a compra.";
     }
+    revalidatePath("/dashboard/compras");
     redirect("/dashboard/compras");
 }
