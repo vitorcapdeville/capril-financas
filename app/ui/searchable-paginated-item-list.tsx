@@ -1,6 +1,7 @@
 import { SearchParams } from "@/app/lib/definitions";
 import Pagination from "@/app/ui/pagination";
 import Search from "@/app/ui/search";
+import { LinearProgress } from "@mui/material";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -101,7 +102,7 @@ export default async function SearchablePaginatedItemList(
             </h1>
 
             <Search routeName={props.routeName} />
-            <Suspense fallback={<div>Carregando...</div>}>
+            <Suspense fallback={<LinearProgress />}>
                 <PaginatedItemList
                     search={search || ""}
                     page={page}
