@@ -13,16 +13,16 @@ const Search = (
     const router = useRouter();
     const [text, setText] = useState(search || "");
     const [query] = useDebounce(text, 750);
+    const params = new URLSearchParams(searchParams.toString());
 
     useEffect(() => {
-        const params = new URLSearchParams(searchParams.toString());
         params.set("page", "1");
         params.set("search", query);
         if (!query) {
             params.delete("search");
         }
         router.push(`?${params.toString()}`);
-    }, [query, router, searchParams]);
+    }, [query]);
 
     return (
         <TextField
@@ -31,6 +31,7 @@ const Search = (
             onChange={(e) => setText(e.target.value)}
             id="outlined-start-adornment"
             fullWidth
+            // onChange
             margin="normal"
             slotProps={{
                 input: {

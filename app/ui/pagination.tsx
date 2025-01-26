@@ -2,31 +2,27 @@
 
 import { Pagination as PaginationMUI } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
 const Pagination = (
-    { pageNumber, count }: {
-        pageNumber: number;
+    { count }: {
         count: number;
     },
 ) => {
     const searchParams = useSearchParams();
+    const selectedPage = Number(searchParams.get("page")) || 1;
     const router = useRouter();
 
-    const [page, setPage] = useState(pageNumber);
-
-    useEffect(() => {
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         const params = new URLSearchParams(searchParams.toString());
-        params.set("page", page.toString());
-
+        params.set("page", value.toString());
         router.push(`?${params.toString()}`);
-    }, [page, router, searchParams]);
+    };
 
     return (
         <PaginationMUI
             count={count}
-            page={page}
-            onChange={(e, v) => setPage(v)}
+            page={selectedPage}
+            onChange={handleChange}
         />
     );
 };

@@ -11,7 +11,6 @@ interface SubProperties {
 }
 
 interface BaseProps {
-    readItemsFunction: any;
     pageSize: number;
     routeName: string;
     mainProperty: string;
@@ -20,10 +19,11 @@ interface BaseProps {
 
 interface SearchablePaginatedItemListProps extends BaseProps {
     searchParams: SearchParams;
+    readItemsFunction: any;
 }
 interface PaginatedItemList extends BaseProps {
-    search: string;
-    page: number;
+    items: any[];
+    pageCount: number;
 }
 
 const capitalize = function (string: string) {
@@ -32,24 +32,13 @@ const capitalize = function (string: string) {
 
 async function PaginatedItemList(
     {
-        search,
-        page,
-        pageSize,
-        readItemsFunction,
+        items,
+        pageCount,
         routeName,
         mainProperty,
         subProperties,
     }: PaginatedItemList,
 ) {
-    const { data: { data: items, count } } = await readItemsFunction({
-        query: {
-            query: search,
-            skip: (page - 1) * pageSize,
-            limit: pageSize,
-        },
-    });
-    const pageCount = Math.ceil(count / pageSize);
-
     return (
         <>
             <ul className="bg-gray-100 p-5 rounded-lg w-full">
@@ -78,7 +67,6 @@ async function PaginatedItemList(
             </ul>
 
             <Pagination
-                pageNumber={page}
                 count={pageCount}
             />
         </>
@@ -95,6 +83,15 @@ export default async function SearchablePaginatedItemList(
         ? params.search
         : undefined;
 
+    const { data: { data: items, count } } = await props.readItemsFunction({
+        query: {
+            query: search,
+            skip: (page - 1) * props.pageSize,
+            limit: props.pageSize,
+        },
+    });
+    const pageCount = Math.ceil(count / props.pageSize);
+
     return (
         <>
             <h1 className="text-2xl font-bold mb-4">
@@ -104,9 +101,8 @@ export default async function SearchablePaginatedItemList(
             <Search search={search} routeName={props.routeName} />
             <Suspense fallback={<div>Carregando...</div>}>
                 <PaginatedItemList
-                    search={search || ""}
-                    page={page}
-                    readItemsFunction={props.readItemsFunction}
+                    items={items}
+                    pageCount={pageCount}
                     pageSize={props.pageSize}
                     routeName={props.routeName}
                     mainProperty={props.mainProperty}
