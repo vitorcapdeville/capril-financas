@@ -6,6 +6,8 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 
+client.getConfig();
+
 function getPayloadFromToken(access_token: string): User {
     const encodedPayload = access_token.split(".")[1];
     const decodedToken = JSON.parse(atob(encodedPayload));
