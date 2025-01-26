@@ -8,7 +8,6 @@ export async function createCompraAction(
     formData: FormData,
 ) {
     let error;
-    console.log(formData);
     try {
         const response = await createCompra({
             body: {
