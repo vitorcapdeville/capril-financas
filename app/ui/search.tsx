@@ -41,11 +41,7 @@ const Search = (
             margin="normal"
             slotProps={{
                 input: {
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <SearchIcon />
-                        </InputAdornment>
-                    ),
+                    startAdornment: <SearchIcon />,
                 },
             }}
         />

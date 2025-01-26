@@ -3,6 +3,9 @@
 import { authenticate } from "@/app/actions/login";
 import { ErrorDialog } from "@/app/ui/error-dialog";
 import PendingButton from "@/app/ui/form-components/pending-button";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
@@ -19,6 +22,21 @@ export default function LoginForm() {
         "",
     );
     const [open, setOpen] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (
+        event: React.MouseEvent<HTMLButtonElement>,
+    ) => {
+        event.preventDefault();
+    };
+
+    const handleMouseUpPassword = (
+        event: React.MouseEvent<HTMLButtonElement>,
+    ) => {
+        event.preventDefault();
+    };
 
     return (
         <Container
@@ -69,10 +87,30 @@ export default function LoginForm() {
                     <TextField
                         fullWidth
                         margin="normal"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         label="Senha"
                         name="password"
+                        slotProps={{
+                            input: {
+                                endAdornment: (
+                                    <IconButton
+                                        aria-label={showPassword
+                                            ? "hide the password"
+                                            : "display the password"}
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        onMouseUp={handleMouseUpPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword
+                                            ? <VisibilityOff />
+                                            : <Visibility />}
+                                    </IconButton>
+                                ),
+                            },
+                        }}
                     />
+
                     <input
                         type="hidden"
                         name="redirectTo"
