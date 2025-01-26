@@ -1,16 +1,17 @@
 "use server";
 
 import { BackButton } from "@/app/ui/buttons";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { LinearProgress } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 type ItemDetailsProps = {
     readItemByIdFunction: any;
@@ -26,10 +27,10 @@ async function ReadOnlyFields({ readItemByIdFunction, id }: ItemDetailsProps) {
         return notFound();
     }
 
-    const renderFields = (obj: any, parentKey = ''): any => {
+    const renderFields = (obj: any, parentKey = ""): any => {
         return Object.entries(obj).map(([key, value]) => {
             const fullKey = parentKey ? `${parentKey}.${key}` : key;
-            if (typeof value === 'object' && value !== null) {
+            if (typeof value === "object" && value !== null) {
                 return (
                     <Accordion key={fullKey}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -66,7 +67,7 @@ export default async function ItemDetails(
                 Detalhes
             </Typography>
             <Box sx={{ mb: 2 }}>
-                <Suspense fallback={<div>Carregando...</div>}>
+                <Suspense fallback={<LinearProgress />}>
                     <ReadOnlyFields
                         {...props}
                     />
