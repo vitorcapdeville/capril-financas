@@ -29,5 +29,6 @@ export async function createClienteAction(
         return "Falha ao registrar o cliente.";
     }
     revalidatePath("/dashboard/clientes");
+    revalidatePath("/dashboard/vendas/novo");
     redirect("/dashboard/clientes");
 }

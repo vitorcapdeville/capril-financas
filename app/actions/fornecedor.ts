@@ -32,5 +32,7 @@ export async function createFornecedorAction(
         return "Falha ao registrar o fornecedor.";
     }
     revalidatePath("/dashboard/fornecedores");
+    // Compras faz o fetch da lista de fornecedores também, portanto, precisa revalidar também.
+    revalidatePath("/dashboard/compras/novo");
     redirect("/dashboard/fornecedores");
 }

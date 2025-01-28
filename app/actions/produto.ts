@@ -28,5 +28,6 @@ export async function createProdutoAction(
     }
 
     revalidatePath("/dashboard/produtos");
+    revalidatePath("/dashboard/vendas/novo");
     redirect("/dashboard/produtos");
 }
