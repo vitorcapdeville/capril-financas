@@ -26,30 +26,16 @@ export default async function Layout({
             width={150}
             height={100}
           />
-          <Grid2 container spacing={0.5}>
-            <Grid2
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              size={10}
+          <div className="flex items-center justify-center space-x-1">
+            <p>{user.email}</p>
+            <form
+              action={signOutAction}
             >
-              <p>{user.email}</p>
-            </Grid2>
-            <Grid2
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              size={2}
-            >
-              <form
-                action={signOutAction}
-              >
-                <IconButton type="submit" size="small">
-                  <LogoutIcon sx={{ color: "white" }} />
-                </IconButton>
-              </form>
-            </Grid2>
-          </Grid2>
+              <IconButton type="submit" size="small">
+                <LogoutIcon sx={{ color: "white" }} />
+              </IconButton>
+            </form>
+          </div>
         </div>
         <NavLinks />
       </aside>
