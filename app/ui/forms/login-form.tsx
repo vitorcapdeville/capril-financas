@@ -3,39 +3,58 @@
 import { authenticate } from "@/app/actions/login";
 import { ErrorDialog } from "@/app/ui/error-dialog";
 import PendingButton from "@/app/ui/form-components/pending-button";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { IconButton } from "@mui/material";
+import { ShowablePassword } from "@/app/ui/form-components/showable-password";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useActionState, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+
+const zLogin = z.object({
+    username: z.string().email(),
+    password: z.string().min(1),
+    redirectTo: z.string().optional(),
+});
+
+type LoginFormProps = z.infer<typeof zLogin>;
 
 export default function LoginForm() {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
-    const [errorMessage, formAction, isPending] = useActionState(
-        authenticate,
-        "",
-    );
-    const [open, setOpen] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const {
+        control,
+        handleSubmit,
+        register,
+        formState: { isSubmitting, errors },
+        setError,
+    } = useForm<LoginFormProps>({
+        defaultValues: {
+            username: "",
+            password: "",
+            redirectTo: callbackUrl,
+        },
+        resolver: zodResolver(zLogin),
+    });
 
-    const handleMouseDownPassword = (
-        event: React.MouseEvent<HTMLButtonElement>,
-    ) => {
-        event.preventDefault();
-    };
+    const onSubmit = async (data: LoginFormProps) => {
+        const formData = new FormData();
+        Object.entries(data).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
 
-    const handleMouseUpPassword = (
-        event: React.MouseEvent<HTMLButtonElement>,
-    ) => {
-        event.preventDefault();
+        const error = await authenticate(formData);
+
+        if (error) {
+            setError("root", {
+                type: "custom",
+                message: error,
+            });
+        }
     };
 
     return (
@@ -72,59 +91,48 @@ export default function LoginForm() {
                     component="form"
                     noValidate
                     autoComplete="off"
-                    action={(formData) => {
-                        formAction(formData);
-                        setOpen(true);
-                    }}
+                    onSubmit={handleSubmit(onSubmit)}
                 >
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        type="email"
-                        label="Email"
-                        name="email"
+                    <Controller
+                        name="username"
+                        control={control}
+                        render={({ field, fieldState: { error } }) => (
+                            <TextField
+                                {...field}
+                                fullWidth
+                                margin="normal"
+                                type="email"
+                                label="Email"
+                                error={!!error}
+                                helperText={error ? error.message : null}
+                            />
+                        )}
                     />
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        type={showPassword ? "text" : "password"}
-                        label="Senha"
+                    <Controller
                         name="password"
-                        slotProps={{
-                            input: {
-                                endAdornment: (
-                                    <IconButton
-                                        aria-label={showPassword
-                                            ? "hide the password"
-                                            : "display the password"}
-                                        onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
-                                        onMouseUp={handleMouseUpPassword}
-                                        edge="end"
-                                    >
-                                        {showPassword
-                                            ? <VisibilityOff />
-                                            : <Visibility />}
-                                    </IconButton>
-                                ),
-                            },
-                        }}
+                        control={control}
+                        render={({ field, fieldState: { error } }) => (
+                            <ShowablePassword
+                                {...field}
+                                label="Senha"
+                                error={!!error}
+                                helperText={error ? error.message : null}
+                            />
+                        )}
                     />
 
                     <input
+                        {...register("redirectTo")}
                         type="hidden"
                         name="redirectTo"
-                        value={callbackUrl}
                     />
                     <PendingButton
-                        isPending={isPending}
+                        isPending={isSubmitting}
                         text="Entrar"
                         pendingText="Entrando..."
                     />
                     <ErrorDialog
-                        errorMsg={errorMessage || null}
-                        open={open}
-                        handleClose={() => setOpen(false)}
+                        error={errors.root}
                     />
                 </Box>
             </Box>

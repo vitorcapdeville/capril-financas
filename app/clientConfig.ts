@@ -4,6 +4,7 @@ import { getToken } from "@/app/actions/login";
 client.setConfig({
   baseUrl: process.env.BACKEND_URL,
   auth: () => getToken(),
+  // cache: "no-store",
   cache: "force-cache",
   next: { revalidate: 3600 },
 });

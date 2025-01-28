@@ -25,7 +25,7 @@ export const { auth, signIn, signOut } = NextAuth({
             async authorize(credentials) {
                 const parsedCredentials = z
                     .object({
-                        email: z.string().email(),
+                        username: z.string().email(),
                         password: z
                             .string()
                             .min(
@@ -37,14 +37,14 @@ export const { auth, signIn, signOut } = NextAuth({
                     .safeParse(credentials);
 
                 if (parsedCredentials.success) {
-                    const { email, password } = parsedCredentials.data;
+                    const { username, password } = parsedCredentials.data;
 
                     let data;
                     let error;
 
                     try {
                         const response = await login({
-                            body: { username: email, password },
+                            body: { username, password },
                         });
                         data = response.data;
                         error = response.error;
