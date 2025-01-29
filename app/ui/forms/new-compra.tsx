@@ -1,8 +1,7 @@
 "use client";
 
 import { createCompraAction } from "@/app/actions/compra";
-import { FornecedorPublic } from "@/app/client";
-import { getFormData } from "@/app/lib/utils";
+import { CompraCreate, FornecedorPublic } from "@/app/client";
 // import { zCompraCreate } from "@/app/client/zod.gen";
 import { ErrorDialog } from "@/app/ui/error-dialog";
 import {
@@ -16,12 +15,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export const zCompraCreate = z.object({
-    data_compra: z.string().date(),
-    valor: z.coerce.number(),
-    categoria: z.string(),
-    fornecedor_id: z.coerce.number().int(),
+    data_compra: z.string().min(1, { message: "Campo obrigatório" }).date(),
+    valor: z.coerce.number().min(1, { message: "Campo obrigatório" }),
+    categoria: z.string().min(1, { message: "Campo obrigatório" }),
+    fornecedor_id: z.coerce.number().min(1, { message: "Campo obrigatório" })
+        .int(),
 });
-type CompraFormProps = z.infer<typeof zCompraCreate>;
 
 export default function CompraForm(
     { fornecedores }: { fornecedores: FornecedorPublic[] },
@@ -31,21 +30,18 @@ export default function CompraForm(
         handleSubmit,
         formState: { isSubmitting, errors },
         setError,
-    } = useForm<CompraFormProps>({
+    } = useForm<CompraCreate>({
         defaultValues: {
             data_compra: "",
-            valor: 0,
+            valor: "" as unknown as number,
             categoria: "",
-            fornecedor_id: 0,
+            fornecedor_id: "" as unknown as number,
         },
         resolver: zodResolver(zCompraCreate),
     });
 
-    const onSubmit = async (data: CompraFormProps) => {
-        console.log(data);
-        const formData = getFormData(data);
-
-        const error = await createCompraAction(formData);
+    const onSubmit = async (data: CompraCreate) => {
+        const error = await createCompraAction(data);
 
         if (error) {
             setError("root", {
@@ -87,6 +83,7 @@ export default function CompraForm(
                 })}
                 control={control}
                 name="fornecedor_id"
+                placeholder="Fornecedor"
             />
 
             <PendingButton

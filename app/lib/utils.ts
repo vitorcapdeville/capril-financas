@@ -1,4 +1,4 @@
-export const getFormData = (data: Object) => {
+export const getFormData = (data: object) => {
     const formData = new FormData();
     Object.entries(data).forEach(([key, value]) => {
         formData.append(key, value);

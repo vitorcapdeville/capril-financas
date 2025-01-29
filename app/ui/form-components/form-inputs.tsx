@@ -77,6 +77,7 @@ export const RHFAutocompleteField = <
                                 <TextField
                                     {...params}
                                     label={props.placeholder}
+                                    margin="normal"
                                     inputRef={ref}
                                     error={!!error}
                                     helperText={error ? error.message : null}

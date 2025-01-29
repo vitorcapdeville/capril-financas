@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/app/client/sdk.gen";
 import "@/app/ui/globals.css";
 import NavLinks from "@/app/ui/nav-links";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Grid2, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import Image from "next/image";
 export const dynamic = "force-dynamic";
 

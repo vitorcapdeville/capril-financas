@@ -16,8 +16,10 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
 const zLogin = z.object({
-    username: z.string().email(),
-    password: z.string().min(1),
+    username: z.string().min(1, { message: "Campo obrigatório" }).email({
+        message: "Email inválido",
+    }),
+    password: z.string().min(1, { message: "Campo obrigatório" }),
     redirectTo: z.string().optional(),
 });
 

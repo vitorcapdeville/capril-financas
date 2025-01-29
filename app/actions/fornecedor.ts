@@ -1,6 +1,6 @@
 "use server";
 
-import { createFornecedor } from "@/app/client";
+import { createFornecedor, FornecedorCreate } from "@/app/client";
 import { redirect } from "next/navigation";
 // Não parece ideal esse import. Eu queria apenas configurar em um lugar
 // e não ter q preocupar com isso novamente, mas não está sendo considerado
@@ -11,15 +11,13 @@ import { client } from "@/app/clientConfig";
 import { revalidatePath } from "next/cache";
 
 export async function createFornecedorAction(
-    formData: FormData,
+    data: FornecedorCreate,
 ) {
     client.getConfig(); // dummy call apenas para evitar erros de linter.
     let error;
     try {
         const response = await createFornecedor({
-            body: {
-                nome: formData.get("nome") as string,
-            },
+            body: data,
         });
         error = response.error;
     } catch (e) {
