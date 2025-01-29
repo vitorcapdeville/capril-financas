@@ -1,22 +1,16 @@
 "use server";
 
-import { createCompra } from "@/app/client";
+import { CompraCreate, createCompra } from "@/app/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createCompraAction(
-    prevState: string | undefined,
-    formData: FormData,
+    data: CompraCreate,
 ) {
     let error;
     try {
         const response = await createCompra({
-            body: {
-                categoria: formData.get("categoria") as string,
-                data_compra: formData.get("dataCompra") as string,
-                valor: Number(formData.get("valor")),
-                fornecedor_id: Number(formData.get("fornecedor_id")),
-            },
+            body: data,
         });
         error = response.error;
     } catch (e) {
