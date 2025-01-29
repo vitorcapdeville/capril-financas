@@ -1,13 +1,14 @@
 "use client";
 
 import { authenticate } from "@/app/actions/login";
+import { getFormData } from "@/app/lib/utils";
 import { ErrorDialog } from "@/app/ui/error-dialog";
+import { FormInputText } from "@/app/ui/form-components/form-inputs";
 import PendingButton from "@/app/ui/form-components/pending-button";
 import { ShowablePassword } from "@/app/ui/form-components/showable-password";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -42,10 +43,7 @@ export default function LoginForm() {
     });
 
     const onSubmit = async (data: LoginFormProps) => {
-        const formData = new FormData();
-        Object.entries(data).forEach(([key, value]) => {
-            formData.append(key, value);
-        });
+        const formData = getFormData(data);
 
         const error = await authenticate(formData);
 
@@ -93,20 +91,11 @@ export default function LoginForm() {
                     autoComplete="off"
                     onSubmit={handleSubmit(onSubmit)}
                 >
-                    <Controller
+                    <FormInputText
                         name="username"
+                        label="Email"
                         control={control}
-                        render={({ field, fieldState: { error } }) => (
-                            <TextField
-                                {...field}
-                                fullWidth
-                                margin="normal"
-                                type="email"
-                                label="Email"
-                                error={!!error}
-                                helperText={error ? error.message : null}
-                            />
-                        )}
+                        type="email"
                     />
                     <Controller
                         name="password"

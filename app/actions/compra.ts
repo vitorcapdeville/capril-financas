@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createCompraAction(
-    prevState: string | undefined,
     formData: FormData,
 ) {
     let error;
@@ -13,7 +12,7 @@ export async function createCompraAction(
         const response = await createCompra({
             body: {
                 categoria: formData.get("categoria") as string,
-                data_compra: formData.get("dataCompra") as string,
+                data_compra: formData.get("data_compra") as string,
                 valor: Number(formData.get("valor")),
                 fornecedor_id: Number(formData.get("fornecedor_id")),
             },

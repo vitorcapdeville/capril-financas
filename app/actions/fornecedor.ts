@@ -11,7 +11,6 @@ import { client } from "@/app/clientConfig";
 import { revalidatePath } from "next/cache";
 
 export async function createFornecedorAction(
-    prevState: string | undefined,
     formData: FormData,
 ) {
     client.getConfig(); // dummy call apenas para evitar erros de linter.
