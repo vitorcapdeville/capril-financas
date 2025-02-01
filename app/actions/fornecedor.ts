@@ -1,19 +1,12 @@
 "use server";
 
 import { createFornecedor, FornecedorCreate } from "@/app/client";
-import { redirect } from "next/navigation";
-// Não parece ideal esse import. Eu queria apenas configurar em um lugar
-// e não ter q preocupar com isso novamente, mas não está sendo considerado
-// a config para server actions que são executadas em client components.
-// Além disso, parece que simplesmente importar em alguma das actions resolve para as outras.
-// Estranhamente, o login funciona.
-import { client } from "@/app/clientConfig";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function createFornecedorAction(
     data: FornecedorCreate,
 ) {
-    client.getConfig(); // dummy call apenas para evitar erros de linter.
     let error;
     try {
         const response = await createFornecedor({

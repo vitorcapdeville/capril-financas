@@ -12,7 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@hey-api/client-fetch": "^0.7.1",
+    "@hey-api/client-next": "^0.1.0",
     "@hookform/resolvers": "^3.10.0",
     "@mui/icons-material": "^6.4.1",
     "@mui/material": "^6.4.1",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@hey-api/openapi-ts": "^0.62.3",
+    "@hey-api/openapi-ts": "^0.63.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

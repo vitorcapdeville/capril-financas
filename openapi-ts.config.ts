@@ -1,16 +1,19 @@
 import { defineConfig } from "@hey-api/openapi-ts";
-import { defaultPlugins } from '@hey-api/openapi-ts';
+import { defaultPlugins } from "@hey-api/openapi-ts";
 
 export default defineConfig({
-  client: "@hey-api/client-fetch",
   input: "openapi.json",
   output: "app/client",
   plugins: [
     ...defaultPlugins,
-    'zod',
+    "zod",
+    {
+      name: "@hey-api/client-next",
+      runtimeConfigPath: "./app/hey-api.ts",
+    },
     // {
-    //   name: '@hey-api/sdk', 
-    //   validator: true, 
+    //   name: '@hey-api/sdk',
+    //   validator: true,
     // },
   ],
 });
