@@ -20,7 +20,8 @@ export async function authenticate(
                     return "Algo deu errado.";
             }
         }
-        throw error;
+        console.log(error);
+        return `Erro desconhecido: ${error}`;
     }
 }
 

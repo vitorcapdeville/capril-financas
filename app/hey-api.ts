@@ -5,7 +5,7 @@ export const createClientConfig: CreateClientConfig = (config) => ({
   ...config,
   baseUrl: process.env.BACKEND_URL,
   auth: () => getToken(),
-  // cache: "no-store",
-  cache: "force-cache",
-  next: { revalidate: 3600 },
+  cache: "no-store",
+  // cache: "force-cache",
+  // next: { revalidate: 3600 },
 });
