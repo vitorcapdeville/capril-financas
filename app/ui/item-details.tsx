@@ -13,7 +13,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { HeaderWithBackButton } from "./header-with-back-button";
 
-type ItemDetailsProps = {(error)
+type ItemDetailsProps = {
     readItemByIdFunction: any;
     id: number;
 };
@@ -27,9 +27,11 @@ async function ReadOnlyFields({ readItemByIdFunction, id }: ItemDetailsProps) {
         });
     } catch {
         return (
-            <Typography>
-                Falha de comunicação com a API.
-            </Typography>
+            <>
+                <Typography>
+                    Falha de comunicação com a API.
+                </Typography>
+            </>
         );
     }
 
