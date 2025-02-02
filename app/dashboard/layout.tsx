@@ -12,7 +12,14 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { data: user } = await getCurrentUser();
+  let user;
+
+  try {
+    const { data } = await getCurrentUser();
+    user = data;
+  } catch {
+    user = { email: "" };
+  }
 
   if (!user) return <div>Not authenticated</div>;
 

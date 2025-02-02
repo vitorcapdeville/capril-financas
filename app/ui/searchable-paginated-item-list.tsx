@@ -1,7 +1,7 @@
 import { SearchParams } from "@/app/lib/definitions";
 import Search from "@/app/ui/search";
 import AddIcon from "@mui/icons-material/Add";
-import { Box, Fab, Grid2, LinearProgress, Stack } from "@mui/material";
+import { Fab, Grid2, LinearProgress, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { Suspense } from "react";
 import PaginationMUI from "./pagination";
@@ -41,11 +41,17 @@ async function Pagination(
         pathname: string;
     },
 ) {
-    const { data: count } = await countItemsFunction({
-        query: {
-            query: selectedSearch,
-        },
-    });
+    let count;
+    try {
+        const { data } = await countItemsFunction({
+            query: {
+                query: selectedSearch,
+            },
+        });
+        count = data;
+    } catch {
+        count = 0;
+    }
 
     const pageCount = Math.ceil(count / pageSize);
 
@@ -70,18 +76,33 @@ async function ItemList(
         subProperties,
     }: PaginatedItemList,
 ) {
-    const { data: items } = await readItemsFunction({
-        query: {
-            query: search,
-            skip: (page - 1) * pageSize,
-            limit: pageSize,
-        },
-    });
+    let result;
+    try {
+        result = await readItemsFunction({
+            query: {
+                query: search,
+                skip: (page - 1) * pageSize,
+                limit: pageSize,
+            },
+        });
+    } catch {
+        return (
+            <Typography>
+                Falha de comunicação com a API.
+            </Typography>
+        );
+    }
+
+    const { data: items, error } = result;
+
+    if (error) {
+        return <Typography>Erro ao obter os itens.</Typography>;
+    }
 
     return (
         <>
-            <ul className="bg-gray-100 p-5 rounded-lg w-full">
-                {items.map((item: any) => (
+            {items.length > 0
+                ? items.map((item: any) => (
                     <li key={item.id} className="my-2">
                         <Link
                             href={`/dashboard/${routeName}/${item.id}`}
@@ -102,8 +123,8 @@ async function ItemList(
                             ))}
                         </Link>
                     </li>
-                ))}
-            </ul>
+                ))
+                : <Typography>Nenhum item encontrado.</Typography>}
         </>
     );
 }
@@ -118,7 +139,7 @@ export default async function SearchablePaginatedItemList(
         ? params.search
         : undefined;
 
-    const keyString = `search=${search}&page=${page}`; //  <-- Construct key from searchParams
+    const keyString = `search=${search}&page=${page}`;
 
     return (
         <Stack spacing={0.7}>
@@ -147,17 +168,18 @@ export default async function SearchablePaginatedItemList(
                     </Link>
                 </Grid2>
             </Grid2>
-            <Box></Box>
             <Suspense fallback={<LinearProgress />} key={keyString}>
-                <ItemList
-                    search={search || ""}
-                    page={page}
-                    readItemsFunction={props.readItemsFunction}
-                    pageSize={props.pageSize}
-                    routeName={props.routeName}
-                    mainProperty={props.mainProperty}
-                    subProperties={props.subProperties}
-                />
+                <ul className="bg-gray-100 p-5 rounded-lg w-full">
+                    <ItemList
+                        search={search || ""}
+                        page={page}
+                        readItemsFunction={props.readItemsFunction}
+                        pageSize={props.pageSize}
+                        routeName={props.routeName}
+                        mainProperty={props.mainProperty}
+                        subProperties={props.subProperties}
+                    />
+                </ul>
             </Suspense>
             <Grid2 container>
                 <Grid2

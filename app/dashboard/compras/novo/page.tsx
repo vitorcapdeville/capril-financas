@@ -4,9 +4,17 @@ import { HeaderWithBackButton } from "@/app/ui/header-with-back-button";
 import Container from "@mui/material/Container";
 
 export default async function NovaCompra() {
-    const { data } = await readFornecedores({
-        query: { limit: 10000, skip: 0, query: "" },
-    });
+    let result;
+    try {
+        result = await readFornecedores({
+            query: { limit: 10000, skip: 0, query: "" },
+        });
+    } catch {
+        result = { data: [] };
+    }
+
+    const { data } = result || {};
+
     const fornecedores = data || [];
 
     return (
