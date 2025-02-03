@@ -15,6 +15,7 @@ import { HeaderWithBackButton } from "./header-with-back-button";
 
 type ItemDetailsProps = {
     readItemByIdFunction: any;
+    deleteAction: any;
     id: number;
 };
 
@@ -77,7 +78,11 @@ export default async function ItemDetails(
 ) {
     return (
         <Container maxWidth="sm">
-            <HeaderWithBackButton text="Detalhes" />
+            <HeaderWithBackButton
+                text="Detalhes"
+                id={props.id}
+                deleteAction={props.deleteAction}
+            />
 
             <Box sx={{ mb: 2 }}>
                 <Suspense fallback={<LinearProgress />}>
