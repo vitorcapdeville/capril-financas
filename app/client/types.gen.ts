@@ -326,6 +326,31 @@ export type CountComprasResponses = {
 
 export type CountComprasResponse = CountComprasResponses[keyof CountComprasResponses];
 
+export type DeleteCompraData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/compras/{id}';
+};
+
+export type DeleteCompraErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type DeleteCompraError = DeleteCompraErrors[keyof DeleteCompraErrors];
+
+export type DeleteCompraResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
 export type ReadCompraByIdData = {
     body?: never;
     path: {

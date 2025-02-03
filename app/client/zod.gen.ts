@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 export const zBodyLogin = z.object({
     grant_type: z.union([
-        z.string().regex(/password/),
+        z.string().regex(/^password$/),
         z.null()
     ]).optional(),
     username: z.string(),
@@ -21,44 +21,44 @@ export const zBodyLogin = z.object({
 });
 
 export const zClienteCreate = z.object({
-    nome: z.string(),
-    email: z.string(),
-    categoria: z.string(),
-    endereco: z.string()
+    nome: z.string().min(1),
+    email: z.string().email().min(1),
+    categoria: z.string().min(1),
+    endereco: z.string().min(1)
 });
 
 export const zClientePublic = z.object({
-    nome: z.string(),
-    email: z.string(),
-    categoria: z.string(),
-    endereco: z.string(),
+    nome: z.string().min(1),
+    email: z.string().email().min(1),
+    categoria: z.string().min(1),
+    endereco: z.string().min(1),
     id: z.number().int()
 });
 
 export const zCompraCreate = z.object({
     data_compra: z.string().datetime(),
     valor: z.number(),
-    categoria: z.string(),
+    categoria: z.string().min(1),
     fornecedor_id: z.number().int()
 });
 
 export const zCompraPublic = z.object({
     data_compra: z.string().datetime(),
     valor: z.number(),
-    categoria: z.string(),
+    categoria: z.string().min(1),
     id: z.number().int(),
     fornecedor: z.object({
-        nome: z.string().max(50),
+        nome: z.string().min(1).max(50),
         id: z.number().int()
     })
 });
 
 export const zFornecedorCreate = z.object({
-    nome: z.string().max(50)
+    nome: z.string().min(1).max(50)
 });
 
 export const zFornecedorPublic = z.object({
-    nome: z.string().max(50),
+    nome: z.string().min(1).max(50),
     id: z.number().int()
 });
 
@@ -81,19 +81,19 @@ export const zItemPublic = z.object({
     quantidade: z.number().int(),
     id: z.number().int(),
     produto: z.object({
-        nome: z.string(),
+        nome: z.string().min(1),
         peso_em_gramas: z.number(),
         id: z.number().int()
     })
 });
 
 export const zProdutoCreate = z.object({
-    nome: z.string(),
+    nome: z.string().min(1),
     peso_em_gramas: z.number()
 });
 
 export const zProdutoPublic = z.object({
-    nome: z.string(),
+    nome: z.string().min(1),
     peso_em_gramas: z.number(),
     id: z.number().int()
 });
