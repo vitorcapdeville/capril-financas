@@ -3,7 +3,12 @@ import { getCurrentUser } from "@/app/client/sdk.gen";
 import "@/app/ui/globals.css";
 import NavLinks from "@/app/ui/nav-links";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { IconButton } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Stack,
+  Typography
+} from "@mui/material";
 import Image from "next/image";
 export const dynamic = "force-dynamic";
 
@@ -12,16 +17,34 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  let user;
+  const { data: user } = await getCurrentUser();
 
-  try {
-    const { data } = await getCurrentUser();
-    user = data;
-  } catch {
-    user = { email: "" };
+  if (!user) {
+    return (
+      <Stack
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <Typography
+          variant="h6"
+          component="h1"
+        >
+          Falha na autenticação. Por favor, faça lougout e tente novamente.
+        </Typography>
+        <form
+          action={signOutAction}
+        >
+          <Button type="submit" variant="contained" color="primary">
+            logout
+          </Button>
+        </form>
+      </Stack>
+    );
   }
-
-  if (!user) return <div>Not authenticated</div>;
 
   return (
     <div className="flex">
